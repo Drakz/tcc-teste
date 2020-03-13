@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->status->setStyleSheet("QLabel{color: #008000}");
     }
     else{
-        ui->status->setText("Offline");
+        ui->status->setText("Offline...");
         ui->status->setStyleSheet("QLabel{color: #FF0000}");
     }
 }
