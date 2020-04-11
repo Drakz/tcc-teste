@@ -14,11 +14,11 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_6">
-    <item>
+   <layout class="QGridLayout" name="gridLayout_11">
+    <item row="0" column="0">
      <widget class="QStackedWidget" name="s_principal">
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="login">
        <layout class="QGridLayout" name="gridLayout">
@@ -162,13 +162,26 @@
            <attribute name="title">
             <string>Fazer Prova</string>
            </attribute>
+           <widget class="QPushButton" name="b_entraprova">
+            <property name="geometry">
+             <rect>
+              <x>180</x>
+              <y>190</y>
+              <width>91</width>
+              <height>21</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Entrar na prova</string>
+            </property>
+           </widget>
           </widget>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="professor">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QTabWidget" name="t_professor">
           <property name="tabShape">
@@ -181,61 +194,70 @@
            <attribute name="title">
             <string>Perfil</string>
            </attribute>
-           <widget class="QLabel" name="p_foto">
-            <property name="geometry">
-             <rect>
-              <x>30</x>
-              <y>30</y>
-              <width>128</width>
-              <height>128</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
-border-image: url(:/images/foto_login.png);
-}</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-           <widget class="QLabel" name="p_nome">
+           <widget class="QGroupBox" name="groupBox_4">
             <property name="geometry">
              <rect>
               <x>10</x>
-              <y>160</y>
-              <width>171</width>
-              <height>31</height>
+              <y>10</y>
+              <width>151</width>
+              <height>221</height>
              </rect>
             </property>
-            <property name="text">
-             <string>TextLabel</string>
+            <property name="title">
+             <string>GroupBox</string>
             </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="textInteractionFlags">
-             <set>Qt::NoTextInteraction</set>
-            </property>
-           </widget>
-           <widget class="QPushButton" name="logout_professor">
-            <property name="geometry">
-             <rect>
-              <x>60</x>
-              <y>200</y>
-              <width>64</width>
-              <height>21</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Sair</string>
-            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QLabel" name="p_foto">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>128</width>
+                 <height>128</height>
+                </size>
+               </property>
+               <property name="layoutDirection">
+                <enum>Qt::LeftToRight</enum>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel{
+border-image: url(:/images/foto_login.png);
+}</string>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="p_nome">
+               <property name="text">
+                <string>TextLabel</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+               <property name="textInteractionFlags">
+                <set>Qt::NoTextInteraction</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="logout_professor">
+               <property name="text">
+                <string>Sair</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </widget>
           <widget class="QWidget" name="t_editarprova">
@@ -243,43 +265,23 @@ border-image: url(:/images/foto_login.png);
             <string>Criar Prova</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="2" column="2">
-             <widget class="QGroupBox" name="g_enunciado">
-              <property name="title">
-               <string>Enunciado</string>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_4">
-               <item>
-                <widget class="QTextEdit" name="t_enunciado">
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item row="4" column="2">
-             <widget class="QGroupBox" name="g_resposta">
-              <property name="title">
-               <string>Resposta</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_5">
-               <item row="0" column="0">
-                <widget class="QTextEdit" name="t_resposta">
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                 <property name="html">
-                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="c_tipo">
+              <item>
+               <property name="text">
+                <string>Programação</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Múltipla escolha</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Discursiva</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item row="0" column="0" rowspan="5">
@@ -314,7 +316,7 @@ p, li { white-space: pre-wrap; }
                  </layout>
                 </widget>
                </item>
-               <item row="1" column="1" colspan="2">
+               <item row="2" column="1" colspan="2">
                 <widget class="QPushButton" name="busca_bd">
                  <property name="acceptDrops">
                   <bool>false</bool>
@@ -333,17 +335,24 @@ p, li { white-space: pre-wrap; }
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1" colspan="2">
+               <item row="3" column="1" colspan="2">
                 <widget class="QPushButton" name="gerar_prova">
                  <property name="text">
                   <string>Gerar Prova</string>
                  </property>
                 </widget>
                </item>
+               <item row="1" column="1" colspan="2">
+                <widget class="QPushButton" name="insere_bd">
+                 <property name="text">
+                  <string>Adicionar questão no banco de dados</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </widget>
             </item>
-            <item row="1" column="2">
+            <item row="2" column="1" colspan="2">
              <widget class="QGroupBox" name="g_titulo">
               <property name="title">
                <string>Título</string>
@@ -359,24 +368,66 @@ p, li { white-space: pre-wrap; }
               </layout>
              </widget>
             </item>
+            <item row="4" column="1" colspan="2">
+             <widget class="QGroupBox" name="g_resposta">
+              <property name="title">
+               <string>Resposta</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_5">
+               <item row="0" column="0">
+                <widget class="QTextEdit" name="t_resposta">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                 <property name="html">
+                  <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
             <item row="0" column="2">
-             <widget class="QComboBox" name="c_tipo">
+             <widget class="QComboBox" name="q_dificuldade">
               <item>
                <property name="text">
-                <string>Multipla Escolha</string>
+                <string>Fácil</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Programação</string>
+                <string>Médio</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Discursiva</string>
+                <string>Difícil</string>
                </property>
               </item>
              </widget>
+            </item>
+            <item row="3" column="1" colspan="2">
+             <widget class="QGroupBox" name="g_enunciado">
+              <property name="title">
+               <string>Enunciado</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_4">
+               <item>
+                <widget class="QTextEdit" name="t_enunciado">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="1" colspan="2">
+             <widget class="QSpinBox" name="spinBox"/>
             </item>
            </layout>
            <zorder>g_enunciado</zorder>
@@ -384,18 +435,173 @@ p, li { white-space: pre-wrap; }
            <zorder>g_questoes</zorder>
            <zorder>c_tipo</zorder>
            <zorder>g_titulo</zorder>
+           <zorder>q_dificuldade</zorder>
+           <zorder>spinBox</zorder>
           </widget>
           <widget class="QWidget" name="t_aplicarprova">
            <attribute name="title">
             <string>Aplicar Prova</string>
            </attribute>
           </widget>
-          <widget class="QWidget" name="t_criarquestao">
-           <attribute name="title">
-            <string>Criar Questão</string>
-           </attribute>
-          </widget>
          </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="aluno_prova">
+       <widget class="QGroupBox" name="gr_prova_questoes">
+        <property name="geometry">
+         <rect>
+          <x>9</x>
+          <y>9</y>
+          <width>304</width>
+          <height>551</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Questões</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string/>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="b_compilar">
+              <property name="text">
+               <string>Compilar</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QPushButton" name="b_executar">
+              <property name="text">
+               <string>Executar</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QListWidget" name="l_prova"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="b_entregaprova">
+           <property name="text">
+            <string>Entregar Prova</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="gr_prova_resposta">
+        <property name="geometry">
+         <rect>
+          <x>321</x>
+          <y>155</y>
+          <width>461</width>
+          <height>401</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Resposta</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <widget class="QTextEdit" name="p_resposta"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="gr_prova_enunciado">
+        <property name="geometry">
+         <rect>
+          <x>321</x>
+          <y>9</y>
+          <width>461</width>
+          <height>141</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Enunciado</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="0" column="0">
+          <widget class="QTextEdit" name="p_enunciado">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="p_busca_bd">
+       <layout class="QGridLayout" name="gridLayout_10">
+        <item row="0" column="0" rowspan="2">
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>Busca</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_9">
+           <item row="1" column="2" colspan="2">
+            <widget class="QComboBox" name="materia">
+             <property name="currentText">
+              <string/>
+             </property>
+             <property name="insertPolicy">
+              <enum>QComboBox::InsertAlphabetically</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2" colspan="2">
+            <widget class="QGroupBox" name="groupBox_3">
+             <property name="title">
+              <string/>
+             </property>
+             <property name="flat">
+              <bool>false</bool>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <item>
+               <widget class="QComboBox" name="assunto"/>
+              </item>
+              <item>
+               <widget class="QListWidget" name="list_questoes"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QPushButton" name="voltar">
+             <property name="text">
+              <string>Voltar</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QPushButton" name="adicionar_question">
+             <property name="text">
+              <string>Adicionar</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QTextEdit" name="enunciado_questao">
+          <property name="frameShape">
+           <enum>QFrame::WinPanel</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QTextEdit" name="resposta_questao"/>
         </item>
        </layout>
       </widget>
@@ -406,11 +612,6 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <tabstops>
-  <tabstop>loginInput</tabstop>
-  <tabstop>passwordInput</tabstop>
-  <tabstop>loginButton</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

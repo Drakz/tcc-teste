@@ -20,7 +20,9 @@ struct Questao{
     QString enunciado;
     QString resposta;
     QString titulo;
+    QString dificuldade;
     int tipo;
+    int p = 0;
 };
 
 class busca : public QDialog
@@ -33,11 +35,11 @@ public:
 
 private slots:
     void on_voltar_clicked();
-    void on_buscar_bd_clicked();
+    //void on_buscar_bd_clicked();
     void on_materia_currentIndexChanged(int index);
     void on_list_questoes_currentRowChanged(int currentRow);
-
     void on_adicionar_question_clicked();
+    void on_assunto_currentIndexChanged(int index);
 
 private:
     Questao *questao;

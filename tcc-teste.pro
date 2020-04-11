@@ -25,18 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        busca.cpp \
         main.cpp \
         mainwindow.cpp \
         question.cpp
 
 HEADERS += \
-        busca.h \
         mainwindow.h \
         question.h
 
 FORMS += \
-        busca.ui \
         mainwindow.ui
 
 # Default rules for deployment.

@@ -7,35 +7,12 @@ busca::busca(QWidget *parent, Questao *q) :
     QDialog(parent),
     ui(new Ui::busca)
 {
-    this->questao = q;
-    ui->setupUi(this);
-    QString command = "SELECT materia FROM materia";
-    QSqlQuery query(MainWindow().db);
-    if(query.exec(command)){
-        while(query.next()){
-            l_Materia.append({query.value(0).toString()});
-        }
-    }
-    for(int i=0; i < l_Materia.count(); i++){
-        ui->materia->addItem(l_Materia[i].materia);
-    }
-    command = "SELECT assunto, materia, id FROM assunto";
-    if(query.exec(command)){
-        while(query.next()){
-            l_Assunto.append({query.value(0).toString(),query.value(1).toInt(),query.value(2).toInt()});
-        }
-    }
-    for(int i = 0; i < l_Assunto.count(); i++){
-        if(l_Assunto[i].materia == 1){
-            ui->assunto->addItem(l_Assunto[i].assunto);
-        }
-    }
-    QSqlDatabase::removeDatabase("connection1");
+
 }
 
 busca::~busca()
 {
-    delete ui;
+    //delete ui;
 }
 
 void busca::on_voltar_clicked()
@@ -43,7 +20,7 @@ void busca::on_voltar_clicked()
     this->close();
 }
 
-void busca::on_buscar_bd_clicked()
+/*void busca::on_buscar_bd_clicked()
 {
     l_Questao.clear();
     ui->list_questoes->clear();
@@ -58,7 +35,7 @@ void busca::on_buscar_bd_clicked()
         ui->list_questoes->addItem(l_Questao[i].titulo);
     }
     QSqlDatabase::removeDatabase("connection1");
-}
+}*/
 
 void busca::on_materia_currentIndexChanged(int index)
 {
@@ -89,4 +66,23 @@ void busca::on_adicionar_question_clicked()
     else{
         QMessageBox::information(this, "Alerta", "Nenhuma questão selecionada.");
     }
+}
+
+
+
+void busca::on_assunto_currentIndexChanged(int index)
+{
+    l_Questao.clear();
+    ui->list_questoes->clear();
+    QString command = "SELECT questions.enunciado,questions.resposta,questions.titulo,questions.dificuldade, questions.tipo FROM questions,assunto WHERE assunto.assunto = '" + ui->assunto->currentText() + "' AND assunto.id = questions.flag_assunto ";
+    QSqlQuery query(MainWindow().db);
+    if(query.exec(command)){
+        while(query.next()){
+            l_Questao.append({query.value(0).toString(),query.value(1).toString(),query.value(2).toString(),query.value(3).toString(),query.value(4).toInt()});
+        }
+    }
+    for(int i = 0; i < l_Questao.count(); i++){
+        ui->list_questoes->addItem(l_Questao[i].titulo +" - "+ l_Questao[i].dificuldade);
+    }
+    //QSqlDatabase::removeDatabase("connection1");
 }
