@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QListWidgetItem>
+#include <QRadioButton>
 #include "question.h"
 
 namespace Ui {
@@ -44,13 +45,18 @@ private slots:
     void on_list_questoes_currentRowChanged(int currentRow);
     void on_adicionar_question_clicked();
     void on_assunto_currentIndexChanged(int index);
-
     void on_gerar_prova_clicked();
+    void on_c_tipo_currentIndexChanged(int index);
+    void on_t_adc_questao_clicked();
+    void on_t_rmv_questao_clicked();
+    void on_t_adc_teste_clicked();
+    void on_t_rmv_teste_clicked();
+    void on_b_compilar_clicked();
+    void on_b_executar_clicked();
 
 private:
     QList<question*> bd_question;
     QList<question*> l_Questoes;
-    QList<QString> l_Assunto;
     Ui::MainWindow *ui;
 };
 
