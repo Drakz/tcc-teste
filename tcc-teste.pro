@@ -25,8 +25,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        aluno.cpp \
+        bancodedados.cpp \
         main.cpp \
         mainwindow.cpp \
+        professor.cpp \
         question.cpp
 
 HEADERS += \
