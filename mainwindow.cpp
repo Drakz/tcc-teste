@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "professor.h"
 #include "aluno.h"
-#include "bancodedados.cpp"
+#include "bancodedados.h"
 
 MainWindow::MainWindow(QWidget *parent) :    QMainWindow(parent),    ui(new Ui::MainWindow)
 {
@@ -28,6 +28,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
 
 void MainWindow::on_loginButton_clicked()//Login
 {

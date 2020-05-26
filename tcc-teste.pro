@@ -33,7 +33,10 @@ SOURCES += \
         question.cpp
 
 HEADERS += \
+        aluno.h \
+        bancodedados.h \
         mainwindow.h \
+        professor.h \
         question.h
 
 FORMS += \

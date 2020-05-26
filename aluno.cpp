@@ -35,6 +35,8 @@ void MainWindow::on_logout_aluno_clicked()//Logout aluno
 void MainWindow::on_b_entraprova_clicked()//teste
 {
     int c = l_Questoes.size();
+    QVBoxLayout *vbox = new QVBoxLayout();
+    ui->g_alternativas->setLayout(vbox);
     ui->lista_questoes->clear();
     for(int i = 0; i < c; i++){
         ui->l_prova->addItem("Questão " + QString::number(ui->l_prova->count() + 1));
@@ -70,12 +72,18 @@ void MainWindow::on_l_prova_currentItemChanged(QListWidgetItem *current, QListWi
         }
         else if(l_Questoes[ui->l_prova->row(current)]->tipo == 2){//Múltipla escolha
             ui->pag_respostas->setCurrentIndex(1);
-            QVBoxLayout *vbox = new QVBoxLayout();
+            QLayout *layout = ui->g_alternativas->layout();
+            QLayoutItem *child;
+            if(ui->g_alternativas->layout()->itemAt(0) != 0){
+                while ((child = layout->takeAt(0)) != 0) {
+                    delete child->widget();
+                    delete child;
+                }
+            }
             for (int i = 0; i < static_cast<question_mult*>(l_Questoes[ui->l_prova->row(current)])->alternativas.size(); i++) {
                 QRadioButton *button = new QRadioButton(static_cast<question_mult*>(l_Questoes[ui->l_prova->row(current)])->alternativas[i]);
-                vbox->addWidget(button);
+                ui->g_alternativas->layout()->addWidget(button);
             }
-            ui->g_alternativas->setLayout(vbox);
         }
         else if(l_Questoes[ui->l_prova->row(current)]->tipo == 3){//Discursiva
             ui->pag_respostas->setCurrentIndex(2);
