@@ -3,7 +3,7 @@
 void MainWindow::on_b_compilar_clicked()//Compilar código para o aluno
 {
     QString codigo = ui->p_resposta->toPlainText();
-    QString path = "code.c";
+    QString path = "C://Users/eduar/Desktop/Nova pasta/code.c";
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "File open failed";

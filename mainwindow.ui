@@ -166,7 +166,7 @@
         <item row="0" column="0">
          <widget class="QTabWidget" name="t_aluno">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="a_perfil">
            <attribute name="title">
@@ -763,6 +763,72 @@ p, li { white-space: pre-wrap; }
       </widget>
       <widget class="QWidget" name="p_busca_bd">
        <layout class="QGridLayout" name="gridLayout_10">
+        <item row="1" column="1" colspan="2">
+         <widget class="QStackedWidget" name="stacked_bd">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="bd_programacao">
+           <layout class="QGridLayout" name="gridLayout_13">
+            <item row="1" column="1">
+             <widget class="QLabel" name="bd_input">
+              <property name="text">
+               <string>INPUT</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="bd_output">
+              <property name="text">
+               <string>OUTPUT</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_bd_numcomp">
+              <property name="text">
+               <string>Compilações</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLineEdit" name="bd_numcomp">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QListWidget" name="bd_l_input"/>
+            </item>
+            <item row="2" column="2">
+             <widget class="QListWidget" name="bd_l_output"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="bd_mult">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QListWidget" name="bd_respmult"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="bd_discursiva">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QTextEdit" name="bd_respdiscursiva">
+              <property name="frameShape">
+               <enum>QFrame::WinPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Sunken</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
         <item row="0" column="0" rowspan="2">
          <widget class="QGroupBox" name="groupBox_2">
           <property name="title">
@@ -817,15 +883,18 @@ p, li { white-space: pre-wrap; }
           </layout>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QTextEdit" name="enunciado_questao">
           <property name="frameShape">
            <enum>QFrame::WinPanel</enum>
           </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
          </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QTextEdit" name="resposta_questao"/>
         </item>
        </layout>
       </widget>

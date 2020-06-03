@@ -18,30 +18,19 @@ void MainWindow::on_materia_currentIndexChanged(int index)//Busca assuntos em um
     }
 }
 
-
 void MainWindow::on_list_questoes_currentRowChanged(int currentRow)//Mostrando cada questão após a busca no banco dados
 {
-    ui->enunciado_questao->setText(bd_question[currentRow]->enunciado);
-    //ui->resposta_questao->setText(bd_question[currentRow]->gabarito);
+    bd_question[currentRow]->setBanco(ui);
 }
 
 void MainWindow::on_adicionar_question_clicked()//Mandando questão para a tela de criação de provas
 {
     if(ui->list_questoes->currentRow() >= 0){
-        ui->t_enunciado->setText(ui->enunciado_questao->toPlainText());
-        ui->t_resposta_discursiva->setText(ui->resposta_questao->toPlainText());
-        QStringList temp = ui->list_questoes->currentItem()->text().split(" - ");
-        ui->t_titulo->setText(temp[0]);
-        if(temp[1] == "Fácil"){
-            ui->q_dificuldade->setCurrentIndex(0);
-        }
-        else if (temp[1] == "Médio") {
-            ui->q_dificuldade->setCurrentIndex(1);
-        }
-        else {
-            ui->q_dificuldade->setCurrentIndex(2);
-        }
+        l_Questoes[ui->lista_questoes->currentRow()] = bd_question[ui->list_questoes->currentRow()];
+        ctrl_remover = true;
+        atualizarquestao();
         ui->s_principal->setCurrentIndex(2);
+        ctrl_remover = false;
     }
     else{
         QMessageBox::information(this, "Alerta", "Nenhuma questão selecionada.");
@@ -58,10 +47,27 @@ void MainWindow::on_assunto_currentIndexChanged(int index)//Fazendo a busca no b
     if(query.exec(command)){
         while(query.next()){
             if(query.value(4).toInt() == 1){
-                //bd_question.append(new question_prog(query.value(0).toString(),query.value(1).toString(),query.value(2).toString(),"",query.value(3).toInt(),query.value(4).toInt(),5));
+                QStringList lista = query.value(2).toString().split("¬:¬");
+                int tam = lista.size();
+                QStringList input;
+                QStringList output;
+                for (int i = 0; i < (tam-1); i = i + 2) {
+                    input.append(lista[i]);
+                    output.append(lista[i+1]);
+                }
+                bd_question.append(new question_prog(query.value(0).toString(),query.value(1).toString(),query.value(3).toInt(),query.value(4).toInt() - 1,lista[tam-1].toInt(),input,output));
+            }
+            else if(query.value(4).toInt() == 2){
+                QStringList lista = query.value(2).toString().split("¬:¬");
+                int tam = lista.size();
+                QStringList alternativas;
+                for (int i = 0; i < (tam-1); i++) {
+                    alternativas.append(lista[i]);
+                }
+                bd_question.append(new question_mult(query.value(0).toString(),query.value(1).toString(),query.value(3).toInt(),query.value(4).toInt() - 1,alternativas,lista[tam-1].toInt()));
             }
             else {
-                //bd_question.append(new question(query.value(0).toString(),query.value(1).toString(),query.value(2).toString(),"",query.value(3).toInt(),query.value(4).toInt()));
+                bd_question.append(new question_disc(query.value(0).toString(),query.value(1).toString(),query.value(3).toInt(),query.value(4).toInt() - 1,query.value(2).toString()));
             }
         }
     }

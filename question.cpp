@@ -54,6 +54,61 @@ void question_disc::getGabarito(Ui::MainWindow *ui){
     ui->t_resposta_discursiva->setText(this->gabarito);
 }
 
+void question_prog::setBanco(Ui::MainWindow *ui){
+    ui->stacked_bd->setCurrentIndex(0);
+    ui->bd_l_input->clear();
+    ui->bd_l_output->clear();
+    ui->enunciado_questao->setText(this->enunciado);
+    ui->bd_numcomp->setText(QString::number(this->qtd_comp));
+    QString in;
+    QString out;
+    foreach(in,this->input){
+        QListWidgetItem* item = new QListWidgetItem(in);
+        ui->bd_l_input->addItem(item);
+    }
+    foreach(out,this->output){
+        QListWidgetItem* item = new QListWidgetItem(out);
+        ui->bd_l_output->addItem(item);
+    }
+}
+
+void question_mult::setBanco(Ui::MainWindow *ui){
+    ui->stacked_bd->setCurrentIndex(1);
+    ui->bd_respmult->clear();
+    ui->enunciado_questao->setText(this->enunciado);
+    QString alt;
+    foreach(alt,this->alternativas){
+        QListWidgetItem* item = new QListWidgetItem(alt);
+        item->setCheckState(Qt::Unchecked);
+        ui->bd_respmult->addItem(item);
+    }
+    if(this->alt_correta != -1){
+        ui->bd_respmult->item(this->alt_correta)->setCheckState(Qt::Checked);
+    }
+}
+
+void question_disc::setBanco(Ui::MainWindow *ui){
+    ui->stacked_bd->setCurrentIndex(2);
+    ui->enunciado_questao->setText(this->enunciado);
+    ui->bd_respdiscursiva->setText(this->gabarito);
+}
+
+QString question_prog::imprimir(){
+    QString aux = "";
+    for(int i = 0; i < this->input.size(); i++){
+        aux = this->input[i] + "¬:¬" + this->output[i];
+    }
+
+    return aux;
+}
+
+QString question_mult::imprimir(){
+    return QString::number(this->alt_correta);
+}
+
+QString question_disc::imprimir(){
+    return this->gabarito;
+}
 question_mult::question_mult(QString t, QString e, int d, int tp, QList<QString> alt, int alt_cor) : question(t,e,d,tp){
     this->alternativas = alt;
     this->alt_correta = alt_cor;

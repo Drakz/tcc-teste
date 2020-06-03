@@ -1,6 +1,6 @@
 #include "mainwindow.h"
 
-bool static ctrl_remover = false;
+
 
 void MainWindow::on_lista_questoes_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)//Alternar entre questões da prova e guardar suas propriedades
 {
@@ -46,6 +46,13 @@ void MainWindow::on_lista_questoes_currentItemChanged(QListWidgetItem *current, 
             ui->q_dificuldade->setCurrentIndex(l_Questoes[ui->lista_questoes->row(current)]->dificuldade);
         }
     }
+}
+
+void MainWindow::atualizarquestao(){
+    l_Questoes[ui->lista_questoes->currentRow()]->getGabarito(ui);//POLIMORFISMO!!!
+    ui->t_enunciado->setText(l_Questoes[ui->lista_questoes->currentRow()]->enunciado);
+    ui->t_titulo->setText(l_Questoes[ui->lista_questoes->currentRow()]->titulo);
+    ui->q_dificuldade->setCurrentIndex(l_Questoes[ui->lista_questoes->currentRow()]->dificuldade);
 }
 
 void MainWindow::on_remover_questao_clicked()//Remover uma questão da prova
@@ -128,21 +135,48 @@ void MainWindow::on_insere_bd_clicked()//Inserir questão no banco de dados
     }
 }
 
-void MainWindow::on_gerar_prova_clicked()//TODO
+void MainWindow::on_gerar_prova_clicked()//Gerar XML prova
 {
-    QString path = "prova.txt";
-    QFile file(path);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
+    QDomDocument prova;
+    QDomElement raiz = prova.createElement("Prova");
+    prova.appendChild(raiz);
+    QDomElement questoes = prova.createElement("Questoes");
+    raiz.appendChild(questoes);
+    for(int i = 0; i < l_Questoes.size(); i++){
+        QDomElement questao = prova.createElement("Questao");
+        questao.setAttribute("ID", QString::number(i + 1));
+        questao.setAttribute("Enunciado ",  l_Questoes[i]->enunciado);
+        questao.setAttribute("Dificuldade ",  l_Questoes[i]->dificuldade);
+        questao.setAttribute("Tipo ",  l_Questoes[i]->tipo);
+        if(l_Questoes[i]->tipo == 1){
+            QStringList aux = l_Questoes[i]->imprimir().split("¬:¬");
+            int tam = aux.size();
+            QString input;
+            QString output;
+            for (int i = 0; i < (tam-1); i = i + 2) {
+                input = input + aux[i];
+                output = output + aux[i+1];
+            }
+            questao.setAttribute("Input ",  input);
+            questao.setAttribute("Output ",  output);
+            questao.setAttribute("NumeroCompilacao ",  aux[tam-1]);
+        }
+        else{
+            questao.setAttribute("Gabarito ", l_Questoes[i]->imprimir());
+        }
+        questoes.appendChild(questao);
+    }
+    QFile arquivo("C://Users/eduar/Desktop/Nova pasta/prova.xml");
+    if (!arquivo.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "File open failed";
         return;
     }
-    QTextStream out(&file);
-    QString questao = "";
-    for(int i = 0; i < l_Questoes.size(); i++){
-        questao = l_Questoes[i]->imprimir();
-        out << questao << endl;
+    else{
+        QTextStream stream (&arquivo);
+        stream << prova;
+        arquivo.close();
+        qDebug() << "Prova criada com sucesso!";
     }
-
 }
 
 void MainWindow::on_c_tipo_currentIndexChanged(int index)//Resposta responsiva ao tipo de questão na criação de provas

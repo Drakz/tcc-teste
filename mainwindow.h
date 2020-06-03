@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QListWidgetItem>
+#include <QtXml>
 #include <QRadioButton>
 #include "question.h"
 
@@ -28,6 +29,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void atualizarquestao();
     void on_loginButton_clicked();
     void on_busca_bd_clicked();
     void on_logout_professor_clicked();
@@ -55,6 +57,7 @@ private slots:
     void on_b_executar_clicked();
 
 private:
+    bool ctrl_remover = false;
     QList<question*> bd_question;
     QList<question*> l_Questoes;
     Ui::MainWindow *ui;
