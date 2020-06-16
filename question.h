@@ -2,6 +2,7 @@
 #define QUESTION_H
 #include <QString>
 #include <QList>
+#include <QtXml>
 #include "ui_mainwindow.h"
 
 class question{
@@ -20,7 +21,7 @@ class professorQuestion: public question
 {
 public:
     professorQuestion(int type, QString questionDescription, QString title, int difficulty);
-    virtual QString toXml() = 0;
+    virtual QDomElement toXml(QDomDocument exam) = 0;
     virtual void setAnswer(Ui::MainWindow *ui) = 0;
     virtual void setDatabase(Ui::MainWindow *ui) = 0;
     void setTitle(QString title);
@@ -35,7 +36,7 @@ protected:
 class professorProgrammingQuestion: public professorQuestion{
 public:
     professorProgrammingQuestion(int type, QString questionDescription, QString title, int difficulty, int compilationAmount, QList<QString> input, QList<QString> output);
-    QString toXml();
+    QDomElement toXml(QDomDocument exam);
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
     void setInput(QList<QString> input);
@@ -53,7 +54,7 @@ private:
 class professorMultipleChoiceQuestion: public professorQuestion{
 public:
     professorMultipleChoiceQuestion(int type, QString questionDescription, QString title, int difficulty, QList<QString> alternatives, int correctChoice);
-    QString toXml();
+    QDomElement toXml(QDomDocument exam);
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
     void setAlternatives(QList<QString> alternatives);
@@ -68,7 +69,7 @@ private:
 class professorDiscursiveQuestion: public professorQuestion{
 public:
     professorDiscursiveQuestion(int type, QString questionDescription, QString title, int difficulty, QString correctAnswer);
-    QString toXml();
+    QDomElement toXml(QDomDocument exam);
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
     void setCorrectAnswer(QString correctAnswer);

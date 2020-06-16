@@ -64,12 +64,21 @@ int professorQuestion::getDifficulty(){
 }
 
 //professorProgrammingQuestion functions
-QString professorProgrammingQuestion::toXml(){
-    QString aux = "";
+QDomElement professorProgrammingQuestion::toXml(QDomDocument exam){
+    QDomElement question = exam.createElement("Question");
+    question.setAttribute("QuestionDescription", this->questionDescription);
+    question.setAttribute("Difficulty",  this->difficulty);
+    question.setAttribute("Type",  this->type);
+    QString input = "";
+    QString output = "";
     for(int i = 0; i < this->input.size(); i++){
-        aux = this->input[i] + "¬:¬" + this->output[i];
+        input = input + this->input[i];
+        output = output + this->output[i];
     }
-    return aux;
+    question.setAttribute("Inputs", input);
+    question.setAttribute("Outputs", output);
+    question.setAttribute("CompilationAmount", this->compilationAmount);
+    return question;
 }
 
 void professorProgrammingQuestion::setAnswer(Ui::MainWindow *ui){
@@ -127,8 +136,18 @@ int professorProgrammingQuestion::getCompilationAmount(){
 }
 
 //professorMultipleChoiceQuestion functions
-QString professorMultipleChoiceQuestion::toXml(){
-    return QString::number(this->correctChoice);
+QDomElement professorMultipleChoiceQuestion::toXml(QDomDocument exam){
+    QDomElement question = exam.createElement("Question");
+    question.setAttribute("QuestionDescription", this->questionDescription);
+    question.setAttribute("Difficulty",  this->difficulty);
+    question.setAttribute("Type",  this->type);
+    QString alternatives = "";
+    for(int i = 0; i < this->alternatives.size(); i++){
+        alternatives = alternatives + this->alternatives[i];
+    }
+    question.setAttribute("Alternatives", alternatives);
+    question.setAttribute("CorrectChoice", this->correctChoice);
+    return question;
 }
 
 void professorMultipleChoiceQuestion::setAnswer(Ui::MainWindow *ui){
@@ -173,8 +192,13 @@ int professorMultipleChoiceQuestion::getCorrectChoice(){
     return this->correctChoice;
 }
 //professorDiscursiveQuestion functions
-QString professorDiscursiveQuestion::toXml(){
-    return this->correctAnswer;
+QDomElement professorDiscursiveQuestion::toXml(QDomDocument exam){
+    QDomElement question = exam.createElement("Question");
+    question.setAttribute("QuestionDescription", this->questionDescription);
+    question.setAttribute("Difficulty",  this->difficulty);
+    question.setAttribute("Type",  this->type);
+    question.setAttribute("CorrectAnswer", this->correctAnswer);
+    return question;
 }
 
 void professorDiscursiveQuestion::setAnswer(Ui::MainWindow *ui){
