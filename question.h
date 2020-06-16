@@ -4,48 +4,114 @@
 #include <QList>
 #include "ui_mainwindow.h"
 
-class question
+class question{
+public:
+    question(int type, QString questionDescription);
+    ~question();
+    int getQuestionType();
+    QString getQuestionDescription();
+protected:
+    int type;
+    QString questionDescription;
+};
+
+//professor questions
+class professorQuestion: public question
 {
 public:
-    question(QString t, QString e, int d, int tp);
-    QString titulo;
-    QString enunciado;
-    QString resposta = "";
-    int dificuldade;
-    int tipo;
-    virtual QString imprimir() = 0;
-    virtual void getGabarito(Ui::MainWindow *ui) = 0;
-    virtual void setBanco(Ui::MainWindow *ui) = 0;
+    professorQuestion(int type, QString questionDescription, QString title, int difficulty);
+    virtual QString toXml() = 0;
+    virtual void setAnswer(Ui::MainWindow *ui) = 0;
+    virtual void setDatabase(Ui::MainWindow *ui) = 0;
+    void setTitle(QString title);
+    QString getTitle();
+    void setDifficulty(int difficulty);
+    int getDifficulty();
+protected:
+    QString title;
+    int difficulty;
 };
 
-class question_prog: public question{
+class professorProgrammingQuestion: public professorQuestion{
 public:
-    question_prog(QString t, QString e, int d, int tp, int qtd, QList<QString> i, QList<QString> o);
-    QString imprimir();
-    void getGabarito(Ui::MainWindow *ui);
-    void setBanco(Ui::MainWindow *ui);
+    professorProgrammingQuestion(int type, QString questionDescription, QString title, int difficulty, int compilationAmount, QList<QString> input, QList<QString> output);
+    QString toXml();
+    void setAnswer(Ui::MainWindow *ui);
+    void setDatabase(Ui::MainWindow *ui);
+    void setInput(QList<QString> input);
+    QList<QString> getInput();
+    void setOutput(QList<QString> output);
+    QList<QString> getOutput();
+    void setCompilationAmount(int compilationAmount);
+    int getCompilationAmount();
+private:
     QList<QString> input;
     QList<QString> output;
-    int qtd_comp = 0;
+    int compilationAmount = 0;
 };
 
-class question_mult: public question{
+class professorMultipleChoiceQuestion: public professorQuestion{
 public:
-    QString imprimir();
-    void getGabarito(Ui::MainWindow *ui);
-    void setBanco(Ui::MainWindow *ui);
-    question_mult(QString t, QString e, int d, int tp, QList<QString> alt, int alt_cor);
-    QList<QString> alternativas;
-    int alt_correta = -1;
+    professorMultipleChoiceQuestion(int type, QString questionDescription, QString title, int difficulty, QList<QString> alternatives, int correctChoice);
+    QString toXml();
+    void setAnswer(Ui::MainWindow *ui);
+    void setDatabase(Ui::MainWindow *ui);
+    void setAlternatives(QList<QString> alternatives);
+    QList<QString> getAlternatives();
+    void setCorrectChoice(int correctChoice);
+    int getCorrectChoice();
+private:
+    QList<QString> alternatives;
+    int correctChoice = -1;
 };
 
-class question_disc: public question{
+class professorDiscursiveQuestion: public professorQuestion{
 public:
-    QString imprimir();
-    void getGabarito(Ui::MainWindow *ui);
-    void setBanco(Ui::MainWindow *ui);
-    question_disc(QString t, QString e, int d, int tp, QString g);
-    QString gabarito;
+    professorDiscursiveQuestion(int type, QString questionDescription, QString title, int difficulty, QString correctAnswer);
+    QString toXml();
+    void setAnswer(Ui::MainWindow *ui);
+    void setDatabase(Ui::MainWindow *ui);
+    void setCorrectAnswer(QString correctAnswer);
+    QString getCorrectAnswer();
+private:
+    QString correctAnswer;
+};
+
+//student questions
+class studentDiscursiveQuestion: public question
+{
+public:
+    studentDiscursiveQuestion(int type, QString questionDescription);
+    void setStudentAnswer(QString studentAnswer);
+    QString getStudentAnswer();
+private:
+    QString studentAnswer;
+};
+
+class studentProgrammingQuestion: public question{
+public:
+    studentProgrammingQuestion(int type, QString questionDescription, int compilationAmount);
+    void setCompilerOutput(QString compilerOutput);
+    QString getCompilerOutput();
+    void setStudentAnswer(QString studentAnswer);
+    QString getStudentAnswer();
+    void setCompilationAmount(int compilationAmount);
+    int getCompilationAmount();
+private:
+    int compilationAmount;
+    QString compilerOutput;
+    QString studentAnswer;
+};
+
+class studentMultipleChoiceQuestion: public question{
+public:
+    studentMultipleChoiceQuestion(int type, QString questionDescription, QList<QString> alternatives);
+    void setStudentChoice(int studentChoice);
+    int getStudentChoice();
+    QList<QString> getAlternatives();
+private:
+    QList<QString> alternatives;
+    int studentChoice;
 };
 
 #endif // QUESTION_H
