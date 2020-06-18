@@ -7,7 +7,7 @@
 
 class question{
 public:
-    question(int type, QString questionDescription);
+    question(int _type, QString _questionDescription);
     ~question();
     int getQuestionType();
     QString getQuestionDescription();
@@ -20,13 +20,13 @@ protected:
 class professorQuestion: public question
 {
 public:
-    professorQuestion(int type, QString questionDescription, QString title, int difficulty);
-    virtual QDomElement toXml(QDomDocument exam) = 0;
+    professorQuestion(int _type, QString _questionDescription, QString _title, int _difficulty);
+    virtual QDomElement toXml(QDomDocument _exam) = 0;
     virtual void setAnswer(Ui::MainWindow *ui) = 0;
     virtual void setDatabase(Ui::MainWindow *ui) = 0;
-    void setTitle(QString title);
+    void setTitle(QString _title);
     QString getTitle();
-    void setDifficulty(int difficulty);
+    void setDifficulty(int _difficulty);
     int getDifficulty();
 protected:
     QString title;
@@ -35,15 +35,15 @@ protected:
 
 class professorProgrammingQuestion: public professorQuestion{
 public:
-    professorProgrammingQuestion(int type, QString questionDescription, QString title, int difficulty, int compilationAmount, QList<QString> input, QList<QString> output);
-    QDomElement toXml(QDomDocument exam);
+    professorProgrammingQuestion(int _type, QString _questionDescription, QString _title, int _difficulty, int _compilationAmount, QList<QString> _input, QList<QString> _output);
+    QDomElement toXml(QDomDocument _exam);
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
-    void setInput(QList<QString> input);
+    void setInput(QList<QString> _input);
     QList<QString> getInput();
-    void setOutput(QList<QString> output);
+    void setOutput(QList<QString> _output);
     QList<QString> getOutput();
-    void setCompilationAmount(int compilationAmount);
+    void setCompilationAmount(int _compilationAmount);
     int getCompilationAmount();
 private:
     QList<QString> input;
@@ -53,13 +53,13 @@ private:
 
 class professorMultipleChoiceQuestion: public professorQuestion{
 public:
-    professorMultipleChoiceQuestion(int type, QString questionDescription, QString title, int difficulty, QList<QString> alternatives, int correctChoice);
-    QDomElement toXml(QDomDocument exam);
+    professorMultipleChoiceQuestion(int _type, QString _questionDescription, QString _title, int _difficulty, QList<QString> _alternatives, int _correctChoice);
+    QDomElement toXml(QDomDocument _exam);
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
-    void setAlternatives(QList<QString> alternatives);
+    void setAlternatives(QList<QString> _alternatives);
     QList<QString> getAlternatives();
-    void setCorrectChoice(int correctChoice);
+    void setCorrectChoice(int _correctChoice);
     int getCorrectChoice();
 private:
     QList<QString> alternatives;
@@ -68,35 +68,43 @@ private:
 
 class professorDiscursiveQuestion: public professorQuestion{
 public:
-    professorDiscursiveQuestion(int type, QString questionDescription, QString title, int difficulty, QString correctAnswer);
-    QDomElement toXml(QDomDocument exam);
+    professorDiscursiveQuestion(int _type, QString _questionDescription, QString _title, int _difficulty, QString _correctAnswer);
+    QDomElement toXml(QDomDocument _exam);
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
-    void setCorrectAnswer(QString correctAnswer);
+    void setCorrectAnswer(QString _correctAnswer);
     QString getCorrectAnswer();
 private:
     QString correctAnswer;
 };
 
 //student questions
-class studentDiscursiveQuestion: public question
+class studentQuestion: public question
+{
+public:
+    studentQuestion(int _type, QString _questionDescription);
+    virtual void setStudentAnswer(QString _studentAnswer) = 0;
+    virtual QString getStudentAnswer() = 0;
+};
+
+class studentDiscursiveQuestion: public studentQuestion
 {
 public:
     studentDiscursiveQuestion(int type, QString questionDescription);
-    void setStudentAnswer(QString studentAnswer);
+    void setStudentAnswer(QString _studentAnswer);
     QString getStudentAnswer();
 private:
     QString studentAnswer;
 };
 
-class studentProgrammingQuestion: public question{
+class studentProgrammingQuestion: public studentQuestion{
 public:
-    studentProgrammingQuestion(int type, QString questionDescription, int compilationAmount);
-    void setCompilerOutput(QString compilerOutput);
+    studentProgrammingQuestion(int _type, QString _questionDescription, int _compilationAmount);
+    void setCompilerOutput(QString _compilerOutput);
     QString getCompilerOutput();
-    void setStudentAnswer(QString studentAnswer);
+    void setStudentAnswer(QString _studentAnswer);
     QString getStudentAnswer();
-    void setCompilationAmount(int compilationAmount);
+    void setCompilationAmount(int _compilationAmount);
     int getCompilationAmount();
 private:
     int compilationAmount;
@@ -104,15 +112,15 @@ private:
     QString studentAnswer;
 };
 
-class studentMultipleChoiceQuestion: public question{
+class studentMultipleChoiceQuestion: public studentQuestion{
 public:
-    studentMultipleChoiceQuestion(int type, QString questionDescription, QList<QString> alternatives);
-    void setStudentChoice(int studentChoice);
-    int getStudentChoice();
+    studentMultipleChoiceQuestion(int _type, QString _questionDescription, QList<QString> _alternatives);
+    void setStudentAnswer(QString _studentAnswer);
+    QString getStudentAnswer();
     QList<QString> getAlternatives();
 private:
     QList<QString> alternatives;
-    int studentChoice;
+    int studentAnswer;
 };
 
 #endif // QUESTION_H

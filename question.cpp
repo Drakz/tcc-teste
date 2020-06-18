@@ -1,41 +1,46 @@
 #include "question.h"
 //CONSTRUCTORS
 //super class
-question::question(int type, QString questionDescription){
-    this->type = type;
-    this->questionDescription = questionDescription;
+question::question(int _type, QString _questionDescription){
+    this->type = _type;
+    this->questionDescription = _questionDescription;
 }
 //professor classes
-professorQuestion::professorQuestion(int type, QString questionDescription, QString title, int difficulty) : question (type, questionDescription){
-    this->title = title;
-    this->difficulty = difficulty;
+professorQuestion::professorQuestion(int _type, QString _questionDescription, QString _title, int _difficulty) : question (_type, _questionDescription){
+    this->title = _title;
+    this->difficulty = _difficulty;
 }
 
-professorProgrammingQuestion::professorProgrammingQuestion(int type, QString questionDescription, QString title, int difficulty, int compilationAmount, QList<QString> input, QList<QString> output) : professorQuestion(type,questionDescription,title,difficulty){
-    this->compilationAmount = compilationAmount;
-    this->input = input;
-    this->output = output;
+professorProgrammingQuestion::professorProgrammingQuestion(int _type, QString _questionDescription, QString _title, int _difficulty, int _compilationAmount, QList<QString> _input, QList<QString> _output) : professorQuestion(_type,_questionDescription,_title,_difficulty){
+    this->compilationAmount = _compilationAmount;
+    this->input = _input;
+    this->output = _output;
 }
 
-professorMultipleChoiceQuestion::professorMultipleChoiceQuestion(int type, QString questionDescription, QString title, int difficulty, QList<QString> alternatives, int correctChoice) : professorQuestion(type,questionDescription,title,difficulty){
-    this->alternatives = alternatives;
-    this->correctChoice = correctChoice;
+professorMultipleChoiceQuestion::professorMultipleChoiceQuestion(int _type, QString _questionDescription, QString _title, int _difficulty, QList<QString> _alternatives, int _correctChoice) : professorQuestion(_type,_questionDescription,_title,_difficulty){
+    this->alternatives = _alternatives;
+    this->correctChoice = _correctChoice;
 }
 
-professorDiscursiveQuestion::professorDiscursiveQuestion(int type, QString questionDescription, QString title, int difficulty, QString correctAnswer) : professorQuestion(type,questionDescription,title,difficulty){
-    this->correctAnswer = correctAnswer;
+professorDiscursiveQuestion::professorDiscursiveQuestion(int _type, QString _questionDescription, QString _title, int _difficulty, QString _correctAnswer) : professorQuestion(_type,_questionDescription,_title,_difficulty){
+    this->correctAnswer = _correctAnswer;
 }
 //student classes
-studentDiscursiveQuestion::studentDiscursiveQuestion(int type, QString questionDescription) : question (type, questionDescription){
+
+studentQuestion::studentQuestion(int _type, QString _questionDescription) : question (_type, _questionDescription){
 
 }
 
-studentProgrammingQuestion::studentProgrammingQuestion(int type, QString questionDescription, int compilationAmount) : question (type, questionDescription){
-    this->compilationAmount = compilationAmount;
+studentDiscursiveQuestion::studentDiscursiveQuestion(int _type, QString _questionDescription) : studentQuestion (_type, _questionDescription){
+
 }
 
-studentMultipleChoiceQuestion::studentMultipleChoiceQuestion(int type, QString questionDescription, QList<QString> alternatives) : question (type, questionDescription){
-    this->alternatives = alternatives;
+studentProgrammingQuestion::studentProgrammingQuestion(int _type, QString _questionDescription, int _compilationAmount) : studentQuestion (_type, _questionDescription){
+    this->compilationAmount = _compilationAmount;
+}
+
+studentMultipleChoiceQuestion::studentMultipleChoiceQuestion(int _type, QString _questionDescription, QList<QString> _alternatives) : studentQuestion (_type, _questionDescription){
+    this->alternatives = _alternatives;
 }
 
 //DESTRUCTORS
@@ -50,22 +55,22 @@ QString question::getQuestionDescription(){
 }
 
 //professorQuestion functions
-void professorQuestion::setTitle(QString title){
-    this->title = title;
+void professorQuestion::setTitle(QString _title){
+    this->title = _title;
 }
 QString professorQuestion::getTitle(){
     return this->title;
 }
-void professorQuestion::setDifficulty(int difficulty){
-    this->difficulty = difficulty;
+void professorQuestion::setDifficulty(int _difficulty){
+    this->difficulty = _difficulty;
 }
 int professorQuestion::getDifficulty(){
     return this->difficulty;
 }
 
 //professorProgrammingQuestion functions
-QDomElement professorProgrammingQuestion::toXml(QDomDocument exam){
-    QDomElement question = exam.createElement("Question");
+QDomElement professorProgrammingQuestion::toXml(QDomDocument _exam){
+    QDomElement question = _exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
     question.setAttribute("Difficulty",  this->difficulty);
     question.setAttribute("Type",  this->type);
@@ -116,28 +121,28 @@ void professorProgrammingQuestion::setDatabase(Ui::MainWindow *ui){
     }
 }
 
-void professorProgrammingQuestion::setInput(QList<QString> input){
-    this->input = input;
+void professorProgrammingQuestion::setInput(QList<QString> _input){
+    this->input = _input;
 }
 QList<QString> professorProgrammingQuestion::getInput(){
     return this->input;
 }
-void professorProgrammingQuestion::setOutput(QList<QString> output){
-    this->output = output;
+void professorProgrammingQuestion::setOutput(QList<QString> _output){
+    this->output = _output;
 }
 QList<QString> professorProgrammingQuestion::getOutput(){
     return this->output;
 }
-void professorProgrammingQuestion::setCompilationAmount(int compilationAmount){
-    this->compilationAmount = compilationAmount;
+void professorProgrammingQuestion::setCompilationAmount(int _compilationAmount){
+    this->compilationAmount = _compilationAmount;
 }
 int professorProgrammingQuestion::getCompilationAmount(){
     return this->compilationAmount;
 }
 
 //professorMultipleChoiceQuestion functions
-QDomElement professorMultipleChoiceQuestion::toXml(QDomDocument exam){
-    QDomElement question = exam.createElement("Question");
+QDomElement professorMultipleChoiceQuestion::toXml(QDomDocument _exam){
+    QDomElement question = _exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
     question.setAttribute("Difficulty",  this->difficulty);
     question.setAttribute("Type",  this->type);
@@ -179,21 +184,21 @@ void professorMultipleChoiceQuestion::setDatabase(Ui::MainWindow *ui){
     }
 }
 
-void professorMultipleChoiceQuestion::setAlternatives(QList<QString> alternatives){
-    this->alternatives = alternatives;
+void professorMultipleChoiceQuestion::setAlternatives(QList<QString> _alternatives){
+    this->alternatives = _alternatives;
 }
 QList<QString> professorMultipleChoiceQuestion::getAlternatives(){
     return this->alternatives;
 }
-void professorMultipleChoiceQuestion::setCorrectChoice(int correctChoice){
-    this->correctChoice = correctChoice;
+void professorMultipleChoiceQuestion::setCorrectChoice(int _correctChoice){
+    this->correctChoice = _correctChoice;
 }
 int professorMultipleChoiceQuestion::getCorrectChoice(){
     return this->correctChoice;
 }
 //professorDiscursiveQuestion functions
-QDomElement professorDiscursiveQuestion::toXml(QDomDocument exam){
-    QDomElement question = exam.createElement("Question");
+QDomElement professorDiscursiveQuestion::toXml(QDomDocument _exam){
+    QDomElement question = _exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
     question.setAttribute("Difficulty",  this->difficulty);
     question.setAttribute("Type",  this->type);
@@ -212,47 +217,47 @@ void professorDiscursiveQuestion::setDatabase(Ui::MainWindow *ui){
     ui->bd_respdiscursiva->setText(this->correctAnswer);
 }
 
-void professorDiscursiveQuestion::setCorrectAnswer(QString correctAnswer){
-    this->correctAnswer = correctAnswer;
+void professorDiscursiveQuestion::setCorrectAnswer(QString _correctAnswer){
+    this->correctAnswer = _correctAnswer;
 }
 QString professorDiscursiveQuestion::getCorrectAnswer(){
     return this->correctAnswer;
 }
 
 //studentDiscursiveQuestion functions
-void studentDiscursiveQuestion::setStudentAnswer(QString studentAnswer){
-    this->studentAnswer = studentAnswer;
+void studentDiscursiveQuestion::setStudentAnswer(QString _studentAnswer){
+    this->studentAnswer = _studentAnswer;
 }
 QString studentDiscursiveQuestion::getStudentAnswer(){
     return this->studentAnswer;
 }
 
 //studentProgrammingQuestion functions
-void studentProgrammingQuestion::setCompilerOutput(QString compilerOutput){
-    this->compilerOutput = compilerOutput;
+void studentProgrammingQuestion::setCompilerOutput(QString _compilerOutput){
+    this->compilerOutput = _compilerOutput;
 }
 QString studentProgrammingQuestion::getCompilerOutput(){
     return this->compilerOutput;
 }
-void studentProgrammingQuestion::setStudentAnswer(QString studentAnswer){
-    this->studentAnswer = studentAnswer;
+void studentProgrammingQuestion::setStudentAnswer(QString _studentAnswer){
+    this->studentAnswer = _studentAnswer;
 }
 QString studentProgrammingQuestion::getStudentAnswer(){
     return this->studentAnswer;
 }
-void studentProgrammingQuestion::setCompilationAmount(int compilationAmount){
-    this->compilationAmount = compilationAmount;
+void studentProgrammingQuestion::setCompilationAmount(int _compilationAmount){
+    this->compilationAmount = _compilationAmount;
 }
 int studentProgrammingQuestion::getCompilationAmount(){
     return this->compilationAmount;
 }
 
 //studentMultipleChoiceQuestion functions
-void studentMultipleChoiceQuestion::setStudentChoice(int studentChoice){
-    this->studentChoice = studentChoice;
+void studentMultipleChoiceQuestion::setStudentAnswer(QString _studentAnswer){
+    this->studentAnswer = _studentAnswer.toInt();
 }
-int studentMultipleChoiceQuestion::getStudentChoice(){
-    return this->studentChoice;
+QString studentMultipleChoiceQuestion::getStudentAnswer(){
+    return QString::number(this->studentAnswer);
 }
 QList<QString> studentMultipleChoiceQuestion::getAlternatives(){
     return this->alternatives;
