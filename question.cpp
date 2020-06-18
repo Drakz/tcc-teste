@@ -69,8 +69,9 @@ int professorQuestion::getDifficulty(){
 }
 
 //professorProgrammingQuestion functions
-QDomElement professorProgrammingQuestion::toXml(QDomDocument _exam){
-    QDomElement question = _exam.createElement("Question");
+QDomElement professorProgrammingQuestion::toXml(){
+    QDomDocument exam;
+    QDomElement question = exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
     question.setAttribute("Difficulty",  this->difficulty);
     question.setAttribute("Type",  this->type);
@@ -87,37 +88,37 @@ QDomElement professorProgrammingQuestion::toXml(QDomDocument _exam){
 }
 
 void professorProgrammingQuestion::setAnswer(Ui::MainWindow *ui){
-    ui->c_tipo->setCurrentIndex(0);
-    ui->s_numcomp->setValue(this->getCompilationAmount());
+    ui->cbb_type->setCurrentIndex(0);
+    ui->spb_compilationAmount->setValue(this->getCompilationAmount());
     QString in;
     QString out;
     foreach(in,this->input){
         QListWidgetItem* item = new QListWidgetItem(in);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
-        ui->l_input->addItem(item);
+        ui->ltw_compilationInput->addItem(item);
     }
     foreach(out,this->output){
         QListWidgetItem* item = new QListWidgetItem(out);
         item->setFlags(item->flags() | Qt::ItemIsEditable);
-        ui->l_output->addItem(item);
+        ui->ltw_compilationOutput->addItem(item);
     }
 }
 
 void professorProgrammingQuestion::setDatabase(Ui::MainWindow *ui){
     ui->stacked_bd->setCurrentIndex(0);
-    ui->bd_l_input->clear();
-    ui->bd_l_output->clear();
+    ui->bd_ltw_compilationInput->clear();
+    ui->bd_ltw_compilationOutput->clear();
     ui->enunciado_questao->setText(this->questionDescription);
     ui->bd_numcomp->setText(QString::number(this->compilationAmount));
     QString in;
     QString out;
     foreach(in,this->input){
         QListWidgetItem* item = new QListWidgetItem(in);
-        ui->bd_l_input->addItem(item);
+        ui->bd_ltw_compilationInput->addItem(item);
     }
     foreach(out,this->output){
         QListWidgetItem* item = new QListWidgetItem(out);
-        ui->bd_l_output->addItem(item);
+        ui->bd_ltw_compilationOutput->addItem(item);
     }
 }
 
@@ -141,8 +142,9 @@ int professorProgrammingQuestion::getCompilationAmount(){
 }
 
 //professorMultipleChoiceQuestion functions
-QDomElement professorMultipleChoiceQuestion::toXml(QDomDocument _exam){
-    QDomElement question = _exam.createElement("Question");
+QDomElement professorMultipleChoiceQuestion::toXml(){
+    QDomDocument exam;
+    QDomElement question = exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
     question.setAttribute("Difficulty",  this->difficulty);
     question.setAttribute("Type",  this->type);
@@ -156,16 +158,16 @@ QDomElement professorMultipleChoiceQuestion::toXml(QDomDocument _exam){
 }
 
 void professorMultipleChoiceQuestion::setAnswer(Ui::MainWindow *ui){
-    ui->c_tipo->setCurrentIndex(1);
+    ui->cbb_type->setCurrentIndex(1);
     QString alt;
     foreach(alt,this->alternatives){
         QListWidgetItem* item = new QListWidgetItem(alt);
         item->setFlags(item->flags() | Qt::ItemIsEditable | Qt::ItemIsUserCheckable);
         item->setCheckState(Qt::Unchecked);
-        ui->t_resposta_mult->addItem(item);
+        ui->ltw_multipleChoiceAlternatives->addItem(item);
     }
     if(this->correctChoice != -1){
-        ui->t_resposta_mult->item(this->correctChoice)->setCheckState(Qt::Checked);
+        ui->ltw_multipleChoiceAlternatives->item(this->correctChoice)->setCheckState(Qt::Checked);
     }
 }
 
@@ -197,8 +199,9 @@ int professorMultipleChoiceQuestion::getCorrectChoice(){
     return this->correctChoice;
 }
 //professorDiscursiveQuestion functions
-QDomElement professorDiscursiveQuestion::toXml(QDomDocument _exam){
-    QDomElement question = _exam.createElement("Question");
+QDomElement professorDiscursiveQuestion::toXml(){
+    QDomDocument exam;
+    QDomElement question = exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
     question.setAttribute("Difficulty",  this->difficulty);
     question.setAttribute("Type",  this->type);
@@ -207,8 +210,8 @@ QDomElement professorDiscursiveQuestion::toXml(QDomDocument _exam){
 }
 
 void professorDiscursiveQuestion::setAnswer(Ui::MainWindow *ui){
-    ui->c_tipo->setCurrentIndex(2);
-    ui->t_resposta_discursiva->setText(this->correctAnswer);
+    ui->cbb_type->setCurrentIndex(2);
+    ui->txe_discursiveAnswer->setText(this->correctAnswer);
 }
 
 void professorDiscursiveQuestion::setDatabase(Ui::MainWindow *ui){

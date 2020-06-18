@@ -1,8 +1,18 @@
 #ifndef PROFESSOR_H
 #define PROFESSOR_H
-#include <QTcpSocket>
+#include <QListWidgetItem>
+#include "myserver.h"
+#include "question.h"
 
-class professor{
+class professor : QObject{
+public:
+    professor();
+    MyServer professorServer;
+    QString exam;
+    QList<professorQuestion*> professorQuestionsList;
+
+public slots:
+
 private:
 
 };

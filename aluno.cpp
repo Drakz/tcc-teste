@@ -1,108 +1,177 @@
+#include "aluno.h"
 #include "mainwindow.h"
 
-void MainWindow::on_b_compilar_clicked()//Compilar código para o aluno
+
+student::student(){
+    studentSocket.socket = &studentSocket;
+}
+
+void MainWindow::doStudentReadServer(){
+    QString readFromServer = myStudent->studentSocket.doSocketRead();
+    int messageType = decodeMesage(&readFromServer);
+
+    switch (messageType) {
+        case MESSAGE:
+
+        break;
+
+        case ALERT:
+
+        break;
+
+        case EXAM:
+            myStudent->studentQuestionsList = doBuildExam(readFromServer);
+            ui->lbl_doExamMessage->setText("A prova pode ser iniciada!");
+            ui->btn_startExam->setEnabled(true);
+        break;
+
+    }
+}
+
+void MainWindow::on_btn_enterRoom_clicked(){
+    if(!myStudent->studentSocket.connect(ui->txt_roomHostName->text(),ui->spb_roomDoor->value())){
+        QMessageBox::information(this,"Status da Conexão","Você está conectado!");
+        ui->stw_doExam->setCurrentIndex(1);
+    }
+    else{
+        QMessageBox::critical(this,"Status da Conexão","A conexão falhou...");
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *key){
+    QString alertMessage;
+    if(myStudent->keyMonitoring){
+        int pressedKey = key->key();
+
+        switch(pressedKey){
+
+        case Qt::Key_Meta:
+            alertMessage = myStudent->studentId + " pressionou a tecla Windows!";
+            break;
+
+        case Qt::Key_Alt:
+            alertMessage = myStudent->studentId + " pressionou a tecla Alt!";
+            break;
+
+        case Qt::Key_Control:
+            alertMessage = myStudent->studentId + " pressionou a tecla Ctrl!";
+            break;
+        }
+        if(alertMessage != NULL){
+            myStudent->studentSocket.doSocketWrite(encodeMessage(alertMessage, ALERT));
+        }
+    }
+}
+
+
+void MainWindow::on_btn_compile_clicked()//Compilar código para o student
 {
-    QString codigo = ui->p_resposta->toPlainText();
-    QString path = "C://Users/eduar/Desktop/Nova pasta/code.c";
+    QString studentCode = ui->txe_studentProgrammingAnswer->toPlainText();
+    QString path = "C://code.c";
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "File open failed";
         return;
     }
     QTextStream out(&file);
-    out << codigo << endl;
-    QProcess comp;
-    comp.setProcessChannelMode(QProcess::MergedChannels);
-    comp.start("gcc -g code.c -o code");
-    comp.waitForFinished();
-    QString resp = comp.readAll();
-    if(resp != "")
-        ui->p_compilador->setText(resp);
+    out << studentCode << endl;
+    QProcess studentProgram;
+    studentProgram.setProcessChannelMode(QProcess::MergedChannels);
+    studentProgram.start("gcc -g code.c -o code");
+    studentProgram.waitForFinished();
+    QString compilerOutput = studentProgram.readAll();
+    if(compilerOutput != "")
+        ui->txe_compilerOutput->setText(compilerOutput);
     else
-        ui->p_compilador->setText("Compilado com Sucesso!");
+        ui->txe_compilerOutput->setText("Compilado com Sucesso!");
 }
 
-void MainWindow::on_b_executar_clicked()//Executar código para o aluno
+void MainWindow::on_btn_run_clicked()//Executar código para o student
 {
     system("code");
 }
 
-void MainWindow::on_logout_aluno_clicked()//Logout aluno
+void MainWindow::on_btn_studentLogout_clicked()//Logout student
 {
-    ui->s_principal->setCurrentIndex(0);
+    ui->stw_mainInterface->setCurrentIndex(0);
 }
 
-void MainWindow::on_b_entraprova_clicked()//teste
+void MainWindow::on_btn_startExam_clicked()//teste
 {
-    int c = l_Questoes.size();
+    myStudent->studentSocket.doSocketWrite(encodeMessage(myStudent->studentId + ":\n(" + getCurrentTime() + ") iniciou a prova!" ,MESSAGE));
+    myStudent->keyMonitoring = true;
+    int listSize = myStudent->studentQuestionsList.size();
     QVBoxLayout *vbox = new QVBoxLayout();
-    ui->g_alternativas->setLayout(vbox);
-    ui->lista_questoes->clear();
-    for(int i = 0; i < c; i++){
-        ui->l_prova->addItem("Questão " + QString::number(ui->l_prova->count() + 1));
+    ui->gbx_alternatives->setLayout(vbox);
+    ui->ltw_examQuestionsList->clear();
+    for(int i = 0; i < listSize; i++){
+        ui->ltw_examQuestionsList->addItem("Questão " + QString::number(ui->ltw_examQuestionsList->count() + 1));
     }
-    ui->l_prova->setCurrentRow(0);
-    ui->s_principal->setCurrentIndex(3);
+    ui->ltw_examQuestionsList->setCurrentRow(0);
+    ui->stw_mainInterface->setCurrentIndex(3);
 }
 
-void MainWindow::on_b_entregaprova_clicked()//teste
+void MainWindow::on_btn_finishExam_clicked()//teste
 {
-    ui->s_principal->setCurrentIndex(1);
+    myStudent->studentSocket.doSocketWrite(encodeMessage(myStudent->studentId + ":\n(" + getCurrentTime() + ") terminou a prova!" ,MESSAGE));
+    myStudent->keyMonitoring = false;
+    ui->lbl_doExamMessage->setText("Aguardando recebimento da prova...");
+    ui->stw_mainInterface->setCurrentIndex(1);
 }
 
-void MainWindow::on_l_prova_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous){//Mudança e armazenamento das questões da prova pelo aluno
+void MainWindow::on_ltw_examQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous){//Mudança e armazenamento das questões da prova pelo student
     if(previous){//Salvo a resposta da questão anterior
-        if(l_Questoes[ui->l_prova->row(previous)]->tipo == 1){//Programação
-            l_Questoes[ui->l_prova->row(previous)]->resposta = ui->p_resposta->toPlainText();
-            ui->p_resposta->clear();
-            ui->p_compilador->clear();
+        if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == PROGRAMMING){//Programação
+            myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->setStudentAnswer(ui->txe_studentProgrammingAnswer->toPlainText());
+            ui->txe_studentProgrammingAnswer->clear();
+            ui->txe_compilerOutput->clear();
         }
-        else if(l_Questoes[ui->l_prova->row(previous)]->tipo == 2){//Múltipla escolha
+        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == MULTIPLECHOICE){//Múltipla escolha
         }
-        else if(l_Questoes[ui->l_prova->row(previous)]->tipo == 3){//Discursiva
-            l_Questoes[ui->l_prova->row(previous)]->resposta = ui->prova_resposta_discursiva->toPlainText();
-            ui->prova_resposta_discursiva->clear();
+        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == DISCURSIVE){//Discursiva
+            myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->setStudentAnswer(ui->txe_studentProgrammingAnswer->toPlainText());
+            ui->ptx_studentDiscursiveAnswer->clear();
         }
-        ui->p_enunciado->clear();
+        ui->txe_questionDescription->clear();
     }
     if(current && previous){//Carrego as informações da questão atual
-        if(l_Questoes[ui->l_prova->row(current)]->tipo == 1){//Programação
-            ui->pag_respostas->setCurrentIndex(0);
-            ui->p_resposta->setText(l_Questoes[ui->l_prova->row(previous)]->resposta);
+        if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == PROGRAMMING){//Programação
+            ui->stw_studentAnswers->setCurrentIndex(0);
+            ui->txe_studentProgrammingAnswer->setText(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getStudentAnswer());
         }
-        else if(l_Questoes[ui->l_prova->row(current)]->tipo == 2){//Múltipla escolha
-            ui->pag_respostas->setCurrentIndex(1);
-            QLayout *layout = ui->g_alternativas->layout();
+        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == MULTIPLECHOICE){//Múltipla escolha
+            ui->stw_studentAnswers->setCurrentIndex(1);
+            QLayout *layout = ui->gbx_alternatives->layout();
             QLayoutItem *child;
-            if(ui->g_alternativas->layout()->itemAt(0) != 0){
+            if(ui->gbx_alternatives->layout()->itemAt(0) != 0){
                 while ((child = layout->takeAt(0)) != 0) {
                     delete child->widget();
                     delete child;
                 }
             }
-            for (int i = 0; i < static_cast<question_mult*>(l_Questoes[ui->l_prova->row(current)])->alternativas.size(); i++) {
-                QRadioButton *button = new QRadioButton(static_cast<question_mult*>(l_Questoes[ui->l_prova->row(current)])->alternativas[i]);
-                ui->g_alternativas->layout()->addWidget(button);
+            for (int i = 0; i < static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives().size(); i++) {
+                QRadioButton *button = new QRadioButton(static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives()[i]);
+                ui->gbx_alternatives->layout()->addWidget(button);
             }
         }
-        else if(l_Questoes[ui->l_prova->row(current)]->tipo == 3){//Discursiva
-            ui->pag_respostas->setCurrentIndex(2);
-            ui->prova_resposta_discursiva->setPlainText(l_Questoes[ui->l_prova->row(previous)]->resposta);
+        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == DISCURSIVE){//Discursiva
+            ui->stw_studentAnswers->setCurrentIndex(2);
+            ui->ptx_studentDiscursiveAnswer->setPlainText(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getStudentAnswer());
         }
-        ui->p_enunciado->setText(l_Questoes[ui->l_prova->row(current)]->enunciado);
+        ui->txe_questionDescription->setText(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)]->getQuestionDescription());
     }
 }
 
-void MainWindow::on_l_prova_currentRowChanged(int currentRow)//Habilitar ou não botões de compilação e execução
+void MainWindow::on_ltw_examQuestionsList_currentRowChanged(int currentRow)//Habilitar ou não botões de compilação e execução
 {
-    if(l_Questoes[currentRow]->tipo == 1 && static_cast<question_prog*>(l_Questoes[currentRow])->qtd_comp > 0){
-        ui->b_compilar->setText("Compilar - [" + QString::number(static_cast<question_prog*>(l_Questoes[currentRow])->qtd_comp) + "]");
-        ui->b_compilar->setEnabled(true);
-        ui->b_executar->setEnabled(true);
+    if(myStudent->studentQuestionsList[currentRow]->getQuestionType() == PROGRAMMING && static_cast<studentProgrammingQuestion*>(myStudent->studentQuestionsList[currentRow])->getCompilationAmount() > 0){
+        ui->btn_compile->setText("Compilar - [" + QString::number(static_cast<studentProgrammingQuestion*>(myStudent->studentQuestionsList[currentRow])->getCompilationAmount()) + "]");
+        ui->btn_compile->setEnabled(true);
+        ui->btn_run->setEnabled(true);
     }
     else{
-        ui->b_compilar->setText("Compilar");
-        ui->b_compilar->setEnabled(false);
-        ui->b_executar->setEnabled(false);
+        ui->btn_compile->setText("Compilar");
+        ui->btn_compile->setEnabled(false);
+        ui->btn_run->setEnabled(false);
     }
 }

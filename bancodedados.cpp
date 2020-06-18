@@ -1,8 +1,8 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 
 void MainWindow::on_voltar_clicked()//Sair da busca do banco de dados
 {
-    ui->s_principal->setCurrentIndex(2);
+    ui->stw_mainInterface->setCurrentIndex(2);
 }
 
 void MainWindow::on_materia_currentIndexChanged(int index)//Busca assuntos em uma determinada matéria
@@ -26,14 +26,14 @@ void MainWindow::on_list_questoes_currentRowChanged(int currentRow)//Mostrando c
 void MainWindow::on_adicionar_question_clicked()//Mandando questão para a tela de criação de provas
 {
     if(ui->list_questoes->currentRow() >= 0){
-        l_Questoes[ui->lista_questoes->currentRow()] = bd_question[ui->list_questoes->currentRow()];
+        student->studentQuestionsList[ui->ltw_questions->currentRow()] = bd_question[ui->list_questoes->currentRow()];
         ctrl_remover = true;
-        atualizarquestao();
-        ui->s_principal->setCurrentIndex(2);
+        doUpdateQuestion();
+        ui->stw_mainInterface->setCurrentIndex(2);
         ctrl_remover = false;
     }
     else{
-        QMessageBox::information(this, "Alerta", "Nenhuma questão selecionada.");
+        QMessageBox::information(this, "alertMessage", "Nenhuma questão selecionada.");
     }
 }
 

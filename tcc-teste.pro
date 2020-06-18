@@ -26,21 +26,32 @@ CONFIG += c++11
 
 SOURCES += \
         aluno.cpp \
+        mainwindow.cpp \
+        student.cpp \
         bancodedados.cpp \
         main.cpp \
-        mainwindow.cpp \
+        MainWindow.cpp \
+        myserver.cpp \
+        mysocket.cpp \
         professor.cpp \
-        question.cpp
+        question.cpp \
+        xml.cpp
 
 HEADERS += \
         aluno.h \
-        bancodedados.h \
         mainwindow.h \
+        student.h \
+        bancodedados.h \
+        MainWindow.h \
+        myserver.h \
+        mysocket.h \
         professor.h \
-        question.h
+        question.h \
+        xml.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+        MainWindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
