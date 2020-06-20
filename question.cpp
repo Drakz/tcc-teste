@@ -73,8 +73,8 @@ QDomElement professorProgrammingQuestion::toXml(){
     QDomDocument exam;
     QDomElement question = exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
-    question.setAttribute("Difficulty",  this->difficulty);
-    question.setAttribute("Type",  this->type);
+    question.setAttribute("Difficulty", this->difficulty);
+    question.setAttribute("Type", this->type);
     QString input = "";
     QString output = "";
     for(int i = 0; i < this->input.size(); i++){
@@ -146,8 +146,8 @@ QDomElement professorMultipleChoiceQuestion::toXml(){
     QDomDocument exam;
     QDomElement question = exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
-    question.setAttribute("Difficulty",  this->difficulty);
-    question.setAttribute("Type",  this->type);
+    question.setAttribute("Difficulty", this->difficulty);
+    question.setAttribute("Type", this->type);
     QString alternatives = "";
     for(int i = 0; i < this->alternatives.size(); i++){
         alternatives =  "¬||¬" + this->alternatives[i] + alternatives;
@@ -203,8 +203,8 @@ QDomElement professorDiscursiveQuestion::toXml(){
     QDomDocument exam;
     QDomElement question = exam.createElement("Question");
     question.setAttribute("QuestionDescription", this->questionDescription);
-    question.setAttribute("Difficulty",  this->difficulty);
-    question.setAttribute("Type",  this->type);
+    question.setAttribute("Difficulty", this->difficulty);
+    question.setAttribute("Type", this->type);
     question.setAttribute("CorrectAnswer", this->correctAnswer);
     return question;
 }

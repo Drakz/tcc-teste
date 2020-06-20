@@ -30,34 +30,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_btn_login_clicked()//Login
 {
     if(ui->lne_loginPassword->isEnabled()){
         QString username = ui->lne_loginUser->text();
         QString password = ui->lne_loginPassword->text();
-        myProfessor = new professor();
-        connect(myProfessor->professorServer.newServer, SIGNAL(newConnection()), this, SLOT(doProfessorAddNewSocket()));
-       /* QString command = "SELECT nome FROM user WHERE username = '" + username + "' AND password = '" + password + "' AND status = 0";
+        QString command = "SELECT nome FROM user WHERE username = '" + username + "' AND password = '" + password + "' AND status = 0";
         QSqlQuery query(db);
         if (query.exec(command)){
             if (query.size() > 0){
                 query.first();
-                if(l_Questoes.size() > 0){
-                    ui->ltw_questions->clear();
-                    for (int i = 0; i < l_Questoes.size(); i++) {
-                        ui->ltw_questions->addItem("Questão " + QString::number(i + 1));
-                    }
-               }
-                ui->p_nome->setText(query.value(0).toString());
-                */
+                ui->lbl_professorName->setText(query.value(0).toString());
+                myProfessor = new professor();
+                connect(myProfessor->professorServer.newServer, SIGNAL(newConnection()), this, SLOT(doProfessorAddNewSocket()));
                 ui->stw_mainInterface->setCurrentIndex(2);
-           /* }
+           }
             else{
                 QMessageBox::information(this, "Login inválido.", "Senha ou usuário incorreto.");
             }
         }
-*/
     }
     else{
         myStudent = new student();
