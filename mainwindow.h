@@ -18,7 +18,7 @@ enum {PROGRAMMING = 1, MULTIPLECHOICE,DISCURSIVE};
 #include <QRadioButton>
 #include "question.h"
 #include "professor.h"
-#include "aluno.h"
+#include "student.h"
 #include <QDateTime>
 #include "xml.h"
 

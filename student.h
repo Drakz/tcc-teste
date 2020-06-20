@@ -1,7 +1,6 @@
-#ifndef student_H
-#define student_H
+#ifndef STUDENT_H
+#define STUDENT_H
 
-#include "mysocket.h"
 #include <QListWidgetItem>
 #include "mysocket.h"
 #include "question.h"
@@ -18,4 +17,5 @@ public:
 
 
 };
-#endif // student_H
+#endif // STUDENT_H
+

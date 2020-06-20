@@ -9,6 +9,5 @@ bool doCreateXmlStudentAnswer(QString base);
 QList <studentQuestion*> doBuildExam(QString base);
 QString getXmlExam(QString directory);
 
-
-
 #endif // XML_H
+

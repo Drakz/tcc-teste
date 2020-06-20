@@ -1,6 +1,5 @@
-#include "aluno.h"
+#include "student.h"
 #include "mainwindow.h"
-
 
 student::student(){
     studentSocket.socket = &studentSocket;
@@ -175,3 +174,4 @@ void MainWindow::on_ltw_examQuestionsList_currentRowChanged(int currentRow)//Hab
         ui->btn_run->setEnabled(false);
     }
 }
+

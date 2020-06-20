@@ -12,7 +12,7 @@ bool doCreateXmlAnswerKey(QList <professorQuestion*> professorQuestionsList){
         questions.appendChild(professorQuestionsList[i]->toXml());
     }
     root.appendChild(questions);
-    QFile xmlFile("C:/Users/Lucas Aquino/Documents/QT Creator/XmlProva.special");
+    QFile xmlFile("C:/XmlProva.special");
     if (!xmlFile.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "File open failed";
         return 0;
