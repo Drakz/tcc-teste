@@ -4,12 +4,13 @@
 #include "myserver.h"
 #include "question.h"
 
+
 class professor : QObject{
 public:
     professor();
     MyServer professorServer;
     QString exam;
-    QList<professorQuestion*> professorQuestionsList;
+    QList <professorQuestion*> professorQuestionsList;
 
 public slots:
 

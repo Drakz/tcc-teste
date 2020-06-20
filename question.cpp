@@ -107,7 +107,7 @@ void professorProgrammingQuestion::setAnswer(Ui::MainWindow *ui){
 void professorProgrammingQuestion::setDatabase(Ui::MainWindow *ui){
     ui->stacked_bd->setCurrentIndex(0);
     ui->bd_ltw_compilationInput->clear();
-    ui->bd_ltw_compilationOutput->clear();
+    ui->bd_l_output->clear();
     ui->enunciado_questao->setText(this->questionDescription);
     ui->bd_numcomp->setText(QString::number(this->compilationAmount));
     QString in;
@@ -118,7 +118,7 @@ void professorProgrammingQuestion::setDatabase(Ui::MainWindow *ui){
     }
     foreach(out,this->output){
         QListWidgetItem* item = new QListWidgetItem(out);
-        ui->bd_ltw_compilationOutput->addItem(item);
+        ui->bd_l_output->addItem(item);
     }
 }
 

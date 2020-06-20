@@ -37,46 +37,46 @@ public:
 
 private slots:
     //mainwindow
-    void on_loginButton_clicked();
+    void on_btn_login_clicked();
     QString getCurrentTime();
 
     //professor
+    void on_btn_createRoom_clicked();
+    void on_btn_loadExamFile_clicked();
+    void on_btn_closeRoom_clicked();
+    void on_btn_setExamStarted_clicked();
+    void on_btn_setExamFinished_clicked();
+    void on_ltw_setExamQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void doUpdateQuestion();
+    void on_btn_removeQuestion_clicked();
     void on_btn_professorLogout_clicked();
+    void on_btn_addQuestion_clicked();
     void on_btn_createExam_clicked();
+    void on_cbb_type_currentIndexChanged(int index);
     void on_btn_addAlternative_clicked();
     void on_btn_removeAlternative_clicked();
     void on_btn_addTest_clicked();
     void on_btn_removeTest_clicked();
-    void on_btn_setExamStarted_clicked();
-    void on_btn_setExamFinished_clicked();
-    void on_btn_createRoom_clicked();
-    void on_ltw_setExamQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+    void on_busca_bd_clicked();
+    void on_insere_bd_clicked();
 
     //student
+    void on_btn_enterRoom_clicked();
+    void keyPressEvent(QKeyEvent *key);
+    void on_btn_compile_clicked();
+    void on_btn_run_clicked();
     void on_btn_studentLogout_clicked();
-    void on_ltw_questions_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void on_btn_startExam_clicked();
     void on_btn_finishExam_clicked();
     void on_ltw_examQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void on_ltw_examQuestionsList_currentRowChanged(int currentRow);
-    void on_btn_compile_clicked();
-    void on_btn_run_clicked();
-    void on_cbb_type_currentIndexChanged(int index);
-    void keyPressEvent(QKeyEvent *key);
-    void on_btn_enterRoom_clicked();
-    void on_btn_loadExamFile_clicked();
 
     //BD
-    void on_busca_bd_clicked();
-    void on_insere_bd_clicked();
     void on_voltar_clicked();
     void on_materia_currentIndexChanged(int index);
     void on_list_questoes_currentRowChanged(int currentRow);
     void on_adicionar_question_clicked();
     void on_assunto_currentIndexChanged(int index);
-
-
 
 public slots:
     //mainwindow
@@ -94,6 +94,7 @@ private:
     //mainwindow
     Ui::MainWindow *ui;
     QTimer *time;
+    bool isWritable = false;
 
     //professor
     professor* myProfessor;
@@ -102,8 +103,7 @@ private:
     student* myStudent;
 
     //BD
-    QList<question*> bd_question;
-    bool ctrl_remover = false;
+    QList<professorQuestion*> bd_question;
 
 };
 

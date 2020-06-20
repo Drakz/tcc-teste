@@ -32,7 +32,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_loginButton_clicked()//Login
+void MainWindow::on_btn_login_clicked()//Login
 {
     if(ui->lne_loginPassword->isEnabled()){
         QString username = ui->lne_loginUser->text();
