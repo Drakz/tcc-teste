@@ -172,7 +172,7 @@
         <item row="0" column="0">
          <widget class="QTabWidget" name="tbw_student">
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="wgt_studentProfile">
            <attribute name="title">

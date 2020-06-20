@@ -2,6 +2,7 @@
 #define XML_H
 #include <QDialog>
 #include <QtXml>
+#include <QtCore>
 #include "question.h"
 
 bool doCreateXmlAnswerKey(QList<professorQuestion*> l_Questoes);

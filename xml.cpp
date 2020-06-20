@@ -1,6 +1,4 @@
 #include "xml.h"
-#include <QtCore>
-#include <QDebug>
 
 bool doCreateXmlAnswerKey(QList <professorQuestion*> professorQuestionsList){
     QDomDocument answerKey;

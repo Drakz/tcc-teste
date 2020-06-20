@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "professor.h"
-#include <QMessageBox>
 
 professor::professor(){
     this->exam = "";
