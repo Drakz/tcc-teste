@@ -65,7 +65,6 @@ void MainWindow::on_btn_login_clicked()//Login
         myStudent->studentId = ui->lne_loginUser->text();
         connect(myStudent->studentSocket.socket, SIGNAL(readyRead()), this, SLOT(doStudentReadServer()));
         ui->stw_mainInterface->setCurrentIndex(1);
-
     }
     ui->lne_loginUser->clear();
     ui->lne_loginPassword->clear();

@@ -3,7 +3,7 @@
 #include <QString>
 #include <QList>
 #include <QtXml>
-#include "Ui_mainwindow.h"
+#include "ui_mainwindow.h"
 
 class question{
 public:

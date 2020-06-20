@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network xml
+QT += core gui sql network xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -29,7 +29,6 @@ SOURCES += \
         mainwindow.cpp \
         bancodedados.cpp \
         main.cpp \
-        mainwindow.cpp \
         myserver.cpp \
         mysocket.cpp \
         professor.cpp \
