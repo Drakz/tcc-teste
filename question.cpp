@@ -78,8 +78,8 @@ QDomElement professorProgrammingQuestion::toXml(){
     QString input = "";
     QString output = "";
     for(int i = 0; i < this->input.size(); i++){
-        input = input + this->input[i];
-        output = output + this->output[i];
+        input =  "¬||¬" + this->input[i] + input ;
+        output =  "¬||¬" + this->output[i] + output ;
     }
     question.setAttribute("Inputs", input);
     question.setAttribute("Outputs", output);
@@ -105,20 +105,20 @@ void professorProgrammingQuestion::setAnswer(Ui::MainWindow *ui){
 }
 
 void professorProgrammingQuestion::setDatabase(Ui::MainWindow *ui){
-    ui->stacked_bd->setCurrentIndex(0);
-    ui->bd_ltw_compilationInput->clear();
-    ui->bd_l_output->clear();
-    ui->enunciado_questao->setText(this->questionDescription);
-    ui->bd_numcomp->setText(QString::number(this->compilationAmount));
+    ui->stw_dbQuestions->setCurrentIndex(0);
+    ui->ltw_dbCompilationInput->clear();
+    ui->ltw_dbCompilationOutput->clear();
+    ui->txe_dbQuestionDescription->setText(this->questionDescription);
+    ui->spb_dbCompilationAmount->setText(QString::number(this->compilationAmount));
     QString in;
     QString out;
     foreach(in,this->input){
         QListWidgetItem* item = new QListWidgetItem(in);
-        ui->bd_ltw_compilationInput->addItem(item);
+        ui->ltw_dbCompilationInput->addItem(item);
     }
     foreach(out,this->output){
         QListWidgetItem* item = new QListWidgetItem(out);
-        ui->bd_l_output->addItem(item);
+        ui->ltw_dbCompilationOutput->addItem(item);
     }
 }
 
@@ -150,7 +150,7 @@ QDomElement professorMultipleChoiceQuestion::toXml(){
     question.setAttribute("Type",  this->type);
     QString alternatives = "";
     for(int i = 0; i < this->alternatives.size(); i++){
-        alternatives = alternatives + this->alternatives[i];
+        alternatives =  "¬||¬" + this->alternatives[i] + alternatives;
     }
     question.setAttribute("Alternatives", alternatives);
     question.setAttribute("CorrectChoice", this->correctChoice);
@@ -172,17 +172,17 @@ void professorMultipleChoiceQuestion::setAnswer(Ui::MainWindow *ui){
 }
 
 void professorMultipleChoiceQuestion::setDatabase(Ui::MainWindow *ui){
-    ui->stacked_bd->setCurrentIndex(1);
-    ui->bd_respmult->clear();
-    ui->enunciado_questao->setText(this->questionDescription);
+    ui->stw_dbQuestions->setCurrentIndex(1);
+    ui->ltw_dbMultipleChoiceAlternatives->clear();
+    ui->txe_dbQuestionDescription->setText(this->questionDescription);
     QString alt;
     foreach(alt,this->alternatives){
         QListWidgetItem* item = new QListWidgetItem(alt);
         item->setCheckState(Qt::Unchecked);
-        ui->bd_respmult->addItem(item);
+        ui->ltw_dbMultipleChoiceAlternatives->addItem(item);
     }
     if(this->correctChoice != -1){
-        ui->bd_respmult->item(this->correctChoice)->setCheckState(Qt::Checked);
+        ui->ltw_dbMultipleChoiceAlternatives->item(this->correctChoice)->setCheckState(Qt::Checked);
     }
 }
 
@@ -215,9 +215,9 @@ void professorDiscursiveQuestion::setAnswer(Ui::MainWindow *ui){
 }
 
 void professorDiscursiveQuestion::setDatabase(Ui::MainWindow *ui){
-    ui->stacked_bd->setCurrentIndex(2);
-    ui->enunciado_questao->setText(this->questionDescription);
-    ui->bd_respdiscursiva->setText(this->correctAnswer);
+    ui->stw_dbQuestions->setCurrentIndex(2);
+    ui->txe_dbQuestionDescription->setText(this->questionDescription);
+    ui->txe_dbDiscursiveAnswer->setText(this->correctAnswer);
 }
 
 void professorDiscursiveQuestion::setCorrectAnswer(QString _correctAnswer){

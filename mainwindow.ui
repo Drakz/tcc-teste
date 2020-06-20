@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Claudio</string>
   </property>
   <widget class="QWidget" name="wgt_centralWidget">
    <layout class="QGridLayout" name="gridLayout_11">
@@ -172,7 +172,7 @@
         <item row="0" column="0">
          <widget class="QTabWidget" name="tbw_student">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="wgt_studentProfile">
            <attribute name="title">
@@ -222,7 +222,7 @@
                <string>Entrar na Sala</string>
               </property>
              </widget>
-             <widget class="QLabel" name="lbl_roomDoor">
+             <widget class="QLabel" name="lbl_roomPort">
               <property name="geometry">
                <rect>
                 <x>10</x>
@@ -258,7 +258,7 @@
                </rect>
               </property>
              </widget>
-             <widget class="QSpinBox" name="spb_roomDoor">
+             <widget class="QSpinBox" name="spb_roomPort">
               <property name="geometry">
                <rect>
                 <x>240</x>
@@ -733,10 +733,10 @@ p, li { white-space: pre-wrap; }
              </rect>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="wgt_createRoom">
-             <widget class="QLabel" name="lbl_setRoomDoor">
+             <widget class="QLabel" name="lbl_setRoomPort">
               <property name="geometry">
                <rect>
                 <x>10</x>
@@ -749,7 +749,7 @@ p, li { white-space: pre-wrap; }
                <string>Insira a Porta:</string>
               </property>
              </widget>
-             <widget class="QSpinBox" name="spb_setRoomDoor">
+             <widget class="QSpinBox" name="spb_setRoomPort">
               <property name="geometry">
                <rect>
                 <x>150</x>
@@ -835,7 +835,7 @@ p, li { white-space: pre-wrap; }
                <string>Lobby da Sala:</string>
               </property>
              </widget>
-             <widget class="QListWidget" name="ltw_rooomLobby">
+             <widget class="QListWidget" name="ltw_roomLobby">
               <property name="geometry">
                <rect>
                 <x>10</x>
@@ -893,7 +893,7 @@ p, li { white-space: pre-wrap; }
         <item row="1" column="1">
          <widget class="QStackedWidget" name="stw_studentAnswers">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="wgt_studentProgrammingAnswer">
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1022,62 +1022,62 @@ p, li { white-space: pre-wrap; }
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="p_busca_bd">
+      <widget class="QWidget" name="wgt_database">
        <layout class="QGridLayout" name="gridLayout_10">
         <item row="1" column="1" colspan="2">
-         <widget class="QStackedWidget" name="stacked_bd">
+         <widget class="QStackedWidget" name="stw_dbQuestions">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
-          <widget class="QWidget" name="bd_programacao">
+          <widget class="QWidget" name="wgt_dbProgrammingQuestion">
            <layout class="QGridLayout" name="gridLayout_13">
             <item row="1" column="1">
-             <widget class="QLabel" name="bd_input">
+             <widget class="QLabel" name="lbl_dbCompilationInput">
               <property name="text">
                <string>INPUT</string>
               </property>
              </widget>
             </item>
             <item row="1" column="2">
-             <widget class="QLabel" name="bd_output">
+             <widget class="QLabel" name="lbl_dbCompilationOutput">
               <property name="text">
                <string>OUTPUT</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLabel" name="label_bd_numcomp">
+             <widget class="QLabel" name="lbl_dbCompilationAmount">
               <property name="text">
                <string>Compilações</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
-             <widget class="QLineEdit" name="bd_numcomp">
+             <widget class="QLineEdit" name="spb_dbCompilationAmount">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QListWidget" name="bd_ltw_compilationInput"/>
+             <widget class="QListWidget" name="ltw_dbCompilationInput"/>
             </item>
             <item row="2" column="2">
-             <widget class="QListWidget" name="bd_l_output"/>
+             <widget class="QListWidget" name="ltw_dbCompilationOutput"/>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="bd_mult">
+          <widget class="QWidget" name="wgt_dbMultipleChoiceQuestion">
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QListWidget" name="bd_respmult"/>
+             <widget class="QListWidget" name="ltw_dbMultipleChoiceAlternatives"/>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="bd_discursiva">
+          <widget class="QWidget" name="wgt_dbDiscursiveQuestion">
            <layout class="QHBoxLayout" name="horizontalLayout_5">
             <item>
-             <widget class="QTextEdit" name="bd_respdiscursiva">
+             <widget class="QTextEdit" name="txe_dbDiscursiveAnswer">
               <property name="frameShape">
                <enum>QFrame::WinPanel</enum>
               </property>
@@ -1091,13 +1091,13 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="0" column="0" rowspan="2">
-         <widget class="QGroupBox" name="groupBox_2">
+         <widget class="QGroupBox" name="gbx_database">
           <property name="title">
            <string>Busca</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_9">
            <item row="1" column="2" colspan="2">
-            <widget class="QComboBox" name="materia">
+            <widget class="QComboBox" name="cbb_questionSubject">
              <property name="currentText">
               <string/>
              </property>
@@ -1107,7 +1107,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="2" column="2" colspan="2">
-            <widget class="QGroupBox" name="groupBox_3">
+            <widget class="QGroupBox" name="gbx_dbQuestionList">
              <property name="title">
               <string/>
              </property>
@@ -1119,23 +1119,23 @@ p, li { white-space: pre-wrap; }
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
               <item>
-               <widget class="QComboBox" name="assunto"/>
+               <widget class="QComboBox" name="cbb_questionTopic"/>
               </item>
               <item>
-               <widget class="QListWidget" name="list_questoes"/>
+               <widget class="QListWidget" name="ltw_dbQuestionList"/>
               </item>
              </layout>
             </widget>
            </item>
            <item row="3" column="3">
-            <widget class="QPushButton" name="voltar">
+            <widget class="QPushButton" name="btn_closeDbWindow">
              <property name="text">
               <string>Voltar</string>
              </property>
             </widget>
            </item>
            <item row="3" column="2">
-            <widget class="QPushButton" name="adicionar_question">
+            <widget class="QPushButton" name="btn_addDbQuestionToExam">
              <property name="text">
               <string>Adicionar</string>
              </property>
@@ -1145,7 +1145,7 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QTextEdit" name="enunciado_questao">
+         <widget class="QTextEdit" name="txe_dbQuestionDescription">
           <property name="frameShape">
            <enum>QFrame::WinPanel</enum>
           </property>

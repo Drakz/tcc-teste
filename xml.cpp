@@ -7,12 +7,11 @@ bool doCreateXmlAnswerKey(QList <professorQuestion*> professorQuestionsList){
     QDomElement root = answerKey.createElement("Prova");
     answerKey.appendChild(root);
     QDomElement questions = answerKey.createElement("Questoes");
-
     for(int i = 0; i < professorQuestionsList.size(); i++){
         questions.appendChild(professorQuestionsList[i]->toXml());
     }
     root.appendChild(questions);
-    QFile xmlFile("C:/XmlProva.special");
+    QFile xmlFile("C:/Users/eduar/Desktop/Nova pasta/XmlProva.special");
     if (!xmlFile.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "File open failed";
         return 0;
@@ -56,27 +55,18 @@ QString getXmlExam(QString directory){
         QDomNode questionNode = questions.at(i);
 
         if(questionNode.isElement()){
-            QDomElement question = questionNode.toElement();
+            if(questionNode.isElement()){
+                QDomElement itemElement = questionNode.toElement();
+                qDebug() << itemElement.attribute("Type");
+                if(itemElement.attribute("Type") == "1"){
 
-            QDomNodeList items = root.elementsByTagName("Question");
-            for(int i = 0; i < items.count(); i++){
-                QDomNode itemNode = items.at(i);
-                if(itemNode.isElement()){
-                    QDomElement itemElement = itemNode.toElement();
-                    qDebug() << itemElement.attribute("Type");
-
-                    if(itemElement.attribute("Type") == "1"){
-
-                        exam = exam + itemElement.attribute("Type") + "¬||¬" + itemElement.attribute("QuestionDescription") + "¬||¬" + itemElement.attribute("NumeroCompilacao") + "¬|¬";
-                    }
-                    else
-                        if(itemElement.attribute("Type") == "2"){
-                            exam = exam + itemElement.attribute("Type") + "¬||¬" + itemElement.attribute("QuestionDescription") + "¬||¬" + itemElement.attribute("Alternativas") + "¬|¬";
-                        }
-                    else
-                        if(itemElement.attribute("Type") == "3"){
-                            exam = exam + itemElement.attribute("Type") + "¬||¬" + itemElement.attribute("QuestionDescription") + "¬|¬";
-                        }
+                    exam = exam + itemElement.attribute("Type") + "¬||¬" + itemElement.attribute("QuestionDescription") + "¬||¬" + itemElement.attribute("CompilationAmount") + "¬|¬";
+                }
+                else if(itemElement.attribute("Type") == "2"){
+                        exam = exam + itemElement.attribute("Type") + "¬||¬" + itemElement.attribute("QuestionDescription") + "¬||¬" + itemElement.attribute("Alternatives") + "¬|¬";
+                }
+                else if(itemElement.attribute("Type") == "3"){
+                        exam = exam + itemElement.attribute("Type") + "¬||¬" + itemElement.attribute("QuestionDescription") + "¬|¬";
                 }
             }
         }

@@ -19,11 +19,11 @@ void MainWindow::doProfessorReadServer(){
         break;
 
         case MESSAGE:
-            ui->ltw_rooomLobby->addItem(readFromServer); //escrever comunicado no lobby da sala
+            ui->ltw_roomLobby->addItem(readFromServer); //escrever comunicado no lobby da sala
         break;
 
         case ALERT:
-            ui->ltw_rooomLobby->addItem("alertMessage! " + readFromServer); //escrever mensagem de alertMessage no log da sala
+            ui->ltw_roomLobby->addItem("alertMessage! " + readFromServer); //escrever mensagem de alertMessage no log da sala
         break;
 
         case EXAM:
@@ -38,7 +38,7 @@ void MainWindow::doProfessorReadServer(){
 }
 
 void MainWindow::on_btn_createRoom_clicked(){
-    if(!myProfessor->professorServer.startServer(&myProfessor->professorServer, ui->spb_setRoomDoor->value())){
+    if(!myProfessor->professorServer.startServer(&myProfessor->professorServer, ui->spb_setRoomPort->value())){
           QMessageBox::information(this,"Status da Conexão","Servidor Criado!");
           //ui->spb_setRoomDoor->setEnabled(false);
           ui->stw_applyExam->setCurrentIndex(1);
@@ -233,7 +233,7 @@ void MainWindow::on_btn_removeTest_clicked()//Remover par input output na criaç
     delete output;
 }
 
-void MainWindow::on_busca_bd_clicked()//Entrada na janela de busca do banco de dados
+void MainWindow::on_btn_searchOnDb_clicked()//Entrada na janela de busca do banco de dados
 {
     if(ui->ltw_setExamQuestionsList->count() > 0){
         ui->stw_mainInterface->setCurrentIndex(4);
@@ -241,7 +241,7 @@ void MainWindow::on_busca_bd_clicked()//Entrada na janela de busca do banco de d
         QSqlQuery query(db);
         if(query.exec(command)){
             while(query.next()){
-                ui->materia->addItem({query.value(0).toString()});
+                ui->cbb_questionSubject->addItem({query.value(0).toString()});
             }
         }
     }
@@ -250,7 +250,7 @@ void MainWindow::on_busca_bd_clicked()//Entrada na janela de busca do banco de d
     }
 }
 
-void MainWindow::on_insere_bd_clicked()//Inserir questão no banco de dados
+void MainWindow::on_btn_addToDb_clicked()//Inserir questão no banco de dados
 {
     QString command = "SELECT titulo,enunciado FROM questions WHERE titulo = '" + ui->txe_setTitle->toPlainText() + "' OR enunciado = '" + ui->txe_setQuestionDescription->toPlainText() + "'";
     QSqlQuery query(db);

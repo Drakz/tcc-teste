@@ -11,10 +11,7 @@ public:
     student();
     MySocket studentSocket;
     QString studentId;
-    bool keyMonitoring = false;
-
     QList <studentQuestion*> studentQuestionsList;
-
 
 };
 #endif // STUDENT_H

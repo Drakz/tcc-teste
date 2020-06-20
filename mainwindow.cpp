@@ -9,21 +9,20 @@ MainWindow::MainWindow(QWidget *parent) :    QMainWindow(parent),    ui(new Ui::
     connect (time, SIGNAL(timeout()), this, SLOT(getCurrentTime()));
     time->start(1000);
 
-    /* db = QSqlDatabase::addDatabase("QMYSQL","connection1");
+    db = QSqlDatabase::addDatabase("QMYSQL","connection1");
     db.setHostName("127.0.0.1");
     db.setPort(3306);
     db.setDatabaseName("qt");
     db.setUserName("tester");
     db.setPassword("123456");
     if (db.open()){
-        ui->status->setText("Online!");
-        ui->status->setStyleSheet("QLabel{color: #008000}");
+        ui->lbl_status->setText("Online!");
+        ui->lbl_status->setStyleSheet("QLabel{color: #008000}");
     }
     else{
-        ui->status->setText("Offline...");
-        ui->status->setStyleSheet("QLabel{color: #FF0000}");
+        ui->lbl_status->setText("Offline...");
+        ui->lbl_status->setStyleSheet("QLabel{color: #FF0000}");
     }
-    */
 }
 
 MainWindow::~MainWindow()

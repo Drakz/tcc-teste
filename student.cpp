@@ -28,7 +28,7 @@ void MainWindow::doStudentReadServer(){
 }
 
 void MainWindow::on_btn_enterRoom_clicked(){
-    if(!myStudent->studentSocket.connect(ui->txt_roomHostName->text(),ui->spb_roomDoor->value())){
+    if(!myStudent->studentSocket.connect(ui->txt_roomHostName->text(),ui->spb_roomPort->value())){
         QMessageBox::information(this,"Status da Conexão","Você está conectado!");
         ui->stw_doExam->setCurrentIndex(1);
     }
@@ -38,8 +38,8 @@ void MainWindow::on_btn_enterRoom_clicked(){
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *key){
-    QString alertMessage;
-    if(myStudent->keyMonitoring){
+    if(keyMonitoring){
+        QString alertMessage;
         int pressedKey = key->key();
 
         switch(pressedKey){
@@ -98,7 +98,7 @@ void MainWindow::on_btn_studentLogout_clicked()//Logout student
 void MainWindow::on_btn_startExam_clicked()//teste
 {
     myStudent->studentSocket.doSocketWrite(encodeMessage(myStudent->studentId + ":\n(" + getCurrentTime() + ") iniciou a prova!" ,MESSAGE));
-    myStudent->keyMonitoring = true;
+    keyMonitoring = true;
     int listSize = myStudent->studentQuestionsList.size();
     QVBoxLayout *vbox = new QVBoxLayout();
     ui->gbx_alternatives->setLayout(vbox);
@@ -113,7 +113,7 @@ void MainWindow::on_btn_startExam_clicked()//teste
 void MainWindow::on_btn_finishExam_clicked()//teste
 {
     myStudent->studentSocket.doSocketWrite(encodeMessage(myStudent->studentId + ":\n(" + getCurrentTime() + ") terminou a prova!" ,MESSAGE));
-    myStudent->keyMonitoring = false;
+    keyMonitoring = false;
     ui->lbl_doExamMessage->setText("Aguardando recebimento da prova...");
     ui->stw_mainInterface->setCurrentIndex(1);
 }

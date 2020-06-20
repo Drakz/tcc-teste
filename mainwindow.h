@@ -57,8 +57,8 @@ private slots:
     void on_btn_removeAlternative_clicked();
     void on_btn_addTest_clicked();
     void on_btn_removeTest_clicked();
-    void on_busca_bd_clicked();
-    void on_insere_bd_clicked();
+    void on_btn_searchOnDb_clicked();
+    void on_btn_addToDb_clicked();
 
     //student
     void on_btn_enterRoom_clicked();
@@ -72,11 +72,11 @@ private slots:
     void on_ltw_examQuestionsList_currentRowChanged(int currentRow);
 
     //BD
-    void on_voltar_clicked();
-    void on_materia_currentIndexChanged(int index);
-    void on_list_questoes_currentRowChanged(int currentRow);
-    void on_adicionar_question_clicked();
-    void on_assunto_currentIndexChanged(int index);
+    void on_btn_closeDbWindow_clicked();
+    void on_cbb_questionSubject_currentIndexChanged(int index);
+    void on_ltw_dbQuestionList_currentRowChanged(int currentRow);
+    void on_btn_addDbQuestionToExam_clicked();
+    void on_cbb_questionTopic_currentIndexChanged(int index);
 
 public slots:
     //mainwindow
@@ -95,6 +95,7 @@ private:
     Ui::MainWindow *ui;
     QTimer *time;
     bool isWritable = false;
+    bool keyMonitoring = false;
 
     //professor
     professor* myProfessor;
@@ -103,7 +104,7 @@ private:
     student* myStudent;
 
     //BD
-    QList<professorQuestion*> bd_question;
+    QList<professorQuestion*> dbQuestionList;
 
 };
 
