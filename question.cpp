@@ -182,7 +182,7 @@ void professorMultipleChoiceQuestion::setDatabase(Ui::MainWindow *ui){
         ui->ltw_dbMultipleChoiceAlternatives->addItem(item);
     }
     if(this->correctChoice != -1){
-        ui->ltw_dbMultipleChoiceAlternatives->item(this->correctChoice)->setCheckState(Qt::Checked);
+        ui->ltw_dbMultipleChoiceAlternatives->item(this->correctChoice)->setCheckState(Qt::Unchecked);
     }
 }
 

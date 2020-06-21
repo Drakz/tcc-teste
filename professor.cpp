@@ -77,57 +77,58 @@ void MainWindow::on_btn_setExamFinished_clicked(){
     ui->btn_setExamStarted->setEnabled(true);
 }
 
+void MainWindow::doSaveQuestionInProfessorList(int index){
+    //delete(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(previous)]);TODO
+    if(ui->cbb_type->currentIndex() == 0){//Programação
+        QList<QString> input;
+        QList<QString> output;
+        input.clear();
+        output.clear();
+        for (int j = 0; j < ui->ltw_compilationInput->count(); j++){
+            input.append(ui->ltw_compilationInput->item(j)->text());
+            output.append(ui->ltw_compilationOutput->item(j)->text());
+        }
+        myProfessor->professorQuestionsList[index] = new professorProgrammingQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->spb_compilationAmount->value(), input, output);
+        ui->ltw_compilationInput->clear();
+        ui->ltw_compilationOutput->clear();
+        ui->spb_compilationAmount->clear();
+    }
+    else if(ui->cbb_type->currentIndex() == 1){//Múltipla Escolha
+        QList<QString> alternatives;
+        int correctChoice = -1;
+        for (int j = 0; j < ui->ltw_multipleChoiceAlternatives->count(); j++) {
+            if(ui->ltw_multipleChoiceAlternatives->item(j)->checkState() == 2)
+                correctChoice = j;
+            alternatives.append(ui->ltw_multipleChoiceAlternatives->item(j)->text());
+        }
+        myProfessor->professorQuestionsList[index] = new professorMultipleChoiceQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), alternatives, correctChoice);
+        ui->ltw_multipleChoiceAlternatives->clear();
+    }
+    else if(ui->cbb_type->currentIndex() == 2){//Discursiva
+        myProfessor->professorQuestionsList[index] = new professorDiscursiveQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setTitle->toPlainText(), ui->txe_setQuestionDescription->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->txe_discursiveAnswer->toPlainText());
+        ui->txe_discursiveAnswer->clear();
+    }
+    ui->txe_setQuestionDescription->clear();
+    ui->txe_setTitle->clear();
+}
+
 void MainWindow::on_ltw_setExamQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)//Alternar entre questões da prova e guardar suas propriedades
 {
     if(!isWritable){
         if(previous){
-            //delete(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(previous)]);TODO
-            if(ui->cbb_type->currentIndex() == 0){//Programação
-                QList<QString> input;
-                QList<QString> output;
-                input.clear();
-                output.clear();
-                for (int j = 0; j < ui->ltw_compilationInput->count(); j++){
-                    input.append(ui->ltw_compilationInput->item(j)->text());
-                    output.append(ui->ltw_compilationOutput->item(j)->text());
-                }
-                myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(previous)] = new professorProgrammingQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->spb_compilationAmount->value(), input, output);
-                ui->ltw_compilationInput->clear();
-                ui->ltw_compilationOutput->clear();
-                ui->spb_compilationAmount->clear();
-            }
-            else if(ui->cbb_type->currentIndex() == 1){//Múltipla Escolha
-                QList<QString> alternatives;
-                int correctChoice = -1;
-                for (int j = 0; j < ui->ltw_multipleChoiceAlternatives->count(); j++) {
-                    if(ui->ltw_multipleChoiceAlternatives->item(j)->checkState() == 2)
-                        correctChoice = j;
-                    alternatives.append(ui->ltw_multipleChoiceAlternatives->item(j)->text());
-                }
-                myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(previous)] = new professorMultipleChoiceQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), alternatives, correctChoice);
-                ui->ltw_multipleChoiceAlternatives->clear();
-            }
-            else if(ui->cbb_type->currentIndex() == 2){//Discursiva
-                myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(previous)] = new professorDiscursiveQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setTitle->toPlainText(), ui->txe_setQuestionDescription->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->txe_discursiveAnswer->toPlainText());
-                ui->txe_discursiveAnswer->clear();
-            }
-            ui->txe_setQuestionDescription->clear();
-            ui->txe_setTitle->clear();
+            doSaveQuestionInProfessorList(ui->ltw_setExamQuestionsList->row(previous));
         }
         if(current && previous){
-            myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(current)]->setAnswer(ui);//POLIMORFISMO!!!
-            ui->txe_setQuestionDescription->setText(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(current)]->getQuestionDescription());
-            ui->txe_setTitle->setText(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(current)]->getTitle());
-            ui->cbb_difficulty->setCurrentIndex(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->row(current)]->getDifficulty());
+            doUpdateQuestion(ui->ltw_setExamQuestionsList->row(current));
         }
     }
 }
 
-void MainWindow::doUpdateQuestion(){
-    myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->currentRow()]->setAnswer(ui);//POLIMORFISMO!!!
-    ui->txe_setQuestionDescription->setText(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->currentRow()]->getQuestionDescription());
-    ui->txe_setTitle->setText(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->currentRow()]->getTitle());
-    ui->cbb_difficulty->setCurrentIndex(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->currentRow()]->getDifficulty());
+void MainWindow::doUpdateQuestion(int index){
+    myProfessor->professorQuestionsList[index]->setAnswer(ui);//POLIMORFISMO!!!
+    ui->txe_setQuestionDescription->setText(myProfessor->professorQuestionsList[index]->getQuestionDescription());
+    ui->txe_setTitle->setText(myProfessor->professorQuestionsList[index]->getTitle());
+    ui->cbb_difficulty->setCurrentIndex(myProfessor->professorQuestionsList[index]->getDifficulty());
 }
 
 void MainWindow::on_btn_removeQuestion_clicked()//Remover uma questão da prova
@@ -140,7 +141,6 @@ void MainWindow::on_btn_removeQuestion_clicked()//Remover uma questão da prova
         for(int i = 0; i < listSize; i++){
             ui->ltw_setExamQuestionsList->addItem("Questão " + QString::number(ui->ltw_setExamQuestionsList->count() + 1));
         }
-        isWritable = false;
         if(listSize == 0){
             ui->txe_setQuestionDescription->clear();
             ui->txe_discursiveAnswer->clear();
@@ -155,7 +155,9 @@ void MainWindow::on_btn_removeQuestion_clicked()//Remover uma questão da prova
         }
         else{
             ui->ltw_setExamQuestionsList->setCurrentRow(0);
+            doUpdateQuestion(0);
         }
+        isWritable = false;
     }
 }
 
@@ -169,7 +171,7 @@ void MainWindow::on_btn_professorLogout_clicked()//Logout professor
 void MainWindow::on_btn_addQuestion_clicked()//Criando uma questão para a prova
 {
     ui->ltw_setExamQuestionsList->addItem("Questão " + QString::number(ui->ltw_setExamQuestionsList->count() + 1));
-    myProfessor->professorQuestionsList.append(new professorProgrammingQuestion(1, "", "", 0, 0,{}, {}));
+    myProfessor->professorQuestionsList.append(new professorProgrammingQuestion(1, "", "", 0, 1,{}, {}));
     if(ui->txe_setQuestionDescription->isReadOnly()){
         ui->txe_setQuestionDescription->setReadOnly(false);
         ui->txe_setTitle->setReadOnly(false);
@@ -251,14 +253,38 @@ void MainWindow::on_btn_searchOnDb_clicked()//Entrada na janela de busca do banc
 
 void MainWindow::on_btn_addToDb_clicked()//Inserir questão no banco de dados
 {
-    QString command = "SELECT titulo,enunciado FROM questions WHERE titulo = '" + ui->txe_setTitle->toPlainText() + "' OR enunciado = '" + ui->txe_setQuestionDescription->toPlainText() + "'";
-    QSqlQuery query(db);
-    if(query.exec(command)){
-        if(query.size() > 0){
-            QMessageBox::information(this, "alertMessage", "Já existe essa questão no banco de dados, cabeção!");
+    if(ui->txe_setTitle->toPlainText() == ""){
+        QMessageBox::information(this, "Alerta", "A questão precisa de um título.");
+    }
+    else{
+        if(ui->txe_setQuestionDescription->toPlainText() == ""){
+            QMessageBox::information(this, "Alerta", "A questão precisa de um enunciado.");
         }
         else{
-            QMessageBox::information(this, "alertMessage", "Questão adicionada no banco de dados!");
+            if(ui->cbb_type->currentIndex() == 0){
+                if(ui->ltw_compilationInput->count() == 0){
+                    QMessageBox::information(this, "Alerta", "A questão precisa de inputs e outputs para realizar os testes.");
+                }
+                else{
+                    //inserção no bd
+                }
+            }
+            else if(ui->cbb_type->currentIndex() == 1){
+                if(ui->ltw_multipleChoiceAlternatives->count() == 0){
+                    QMessageBox::information(this, "Alerta", "A questão precisa de alternativas.");
+                }
+                else{
+                    //inserção no bd
+                }
+            }
+            else if(ui->cbb_type->currentIndex() == 2){
+                if(ui->txe_discursiveAnswer->toPlainText() == ""){
+                    QMessageBox::information(this, "Alerta", "A questão precisa de um gabarito.");
+                }
+                else{
+                    //inserção no bd
+                }
+            }
         }
     }
 }

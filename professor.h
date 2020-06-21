@@ -15,7 +15,6 @@ public:
 public slots:
 
 private:
-
 };
 
 #endif // PROFESSOR_H

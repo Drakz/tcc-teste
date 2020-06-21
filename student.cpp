@@ -83,6 +83,7 @@ void MainWindow::on_btn_compile_clicked()//Compilar código para o student
         ui->txe_compilerOutput->setText(compilerOutput);
     else
         ui->txe_compilerOutput->setText("Compilado com Sucesso!");
+
 }
 
 void MainWindow::on_btn_run_clicked()//Executar código para o student
@@ -149,8 +150,8 @@ void MainWindow::on_ltw_examQuestionsList_currentItemChanged(QListWidgetItem *cu
                 }
             }
             for (int i = 0; i < static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives().size(); i++) {
-                QRadioButton *button = new QRadioButton(static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives()[i]);
-                ui->gbx_alternatives->layout()->addWidget(button);
+                QCheckBox *checkBox = new QCheckBox(static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives()[i]);
+                ui->gbx_alternatives->layout()->addWidget(checkBox);
             }
         }
         else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == DISCURSIVE){//Discursiva

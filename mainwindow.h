@@ -47,7 +47,7 @@ private slots:
     void on_btn_setExamStarted_clicked();
     void on_btn_setExamFinished_clicked();
     void on_ltw_setExamQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    void doUpdateQuestion();
+    void doUpdateQuestion(int index);
     void on_btn_removeQuestion_clicked();
     void on_btn_professorLogout_clicked();
     void on_btn_addQuestion_clicked();
@@ -59,6 +59,7 @@ private slots:
     void on_btn_removeTest_clicked();
     void on_btn_searchOnDb_clicked();
     void on_btn_addToDb_clicked();
+    void doSaveQuestionInProfessorList(int index);
 
     //student
     void on_btn_enterRoom_clicked();

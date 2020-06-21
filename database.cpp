@@ -28,7 +28,7 @@ void MainWindow::on_btn_addDbQuestionToExam_clicked()//Mandando questão para a 
     if(ui->ltw_dbQuestionList->currentRow() >= 0){
         myProfessor->professorQuestionsList[ui->ltw_dbQuestionList->currentRow()] = dbQuestionList[ui->ltw_dbQuestionList->currentRow()];
         isWritable = true;
-        doUpdateQuestion();
+        doUpdateQuestion(ui->ltw_dbQuestionList->currentRow());
         ui->stw_mainInterface->setCurrentIndex(2);
         isWritable = false;
     }
