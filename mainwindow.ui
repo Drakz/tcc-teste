@@ -317,7 +317,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="wgt_professorProfile">
            <attribute name="title">
@@ -574,6 +574,9 @@ p, li { white-space: pre-wrap; }
               <layout class="QGridLayout" name="gridLayout_3">
                <item row="1" column="1" colspan="2">
                 <widget class="QPushButton" name="btn_addToDb">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="text">
                   <string>Adicionar questão no banco de dados</string>
                  </property>
@@ -581,6 +584,9 @@ p, li { white-space: pre-wrap; }
                </item>
                <item row="2" column="1" colspan="2">
                 <widget class="QPushButton" name="btn_searchOnDb">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="acceptDrops">
                   <bool>false</bool>
                  </property>

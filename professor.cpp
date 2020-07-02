@@ -1,5 +1,5 @@
-#include "mainwindow.h"
 #include "professor.h"
+#include "mainwindow.h"
 
 professor::professor(){
     this->exam = "";
@@ -89,9 +89,6 @@ void MainWindow::doSaveQuestionInProfessorList(int index){
             output.append(ui->ltw_compilationOutput->item(j)->text());
         }
         myProfessor->professorQuestionsList[index] = new professorProgrammingQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->spb_compilationAmount->value(), input, output);
-        ui->ltw_compilationInput->clear();
-        ui->ltw_compilationOutput->clear();
-        ui->spb_compilationAmount->clear();
     }
     else if(ui->cbb_type->currentIndex() == 1){//Múltipla Escolha
         QList<QString> alternatives;
@@ -102,14 +99,11 @@ void MainWindow::doSaveQuestionInProfessorList(int index){
             alternatives.append(ui->ltw_multipleChoiceAlternatives->item(j)->text());
         }
         myProfessor->professorQuestionsList[index] = new professorMultipleChoiceQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), alternatives, correctChoice);
-        ui->ltw_multipleChoiceAlternatives->clear();
     }
     else if(ui->cbb_type->currentIndex() == 2){//Discursiva
-        myProfessor->professorQuestionsList[index] = new professorDiscursiveQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setTitle->toPlainText(), ui->txe_setQuestionDescription->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->txe_discursiveAnswer->toPlainText());
+        myProfessor->professorQuestionsList[index] = new professorDiscursiveQuestion(ui->cbb_type->currentIndex() + 1, ui->txe_setQuestionDescription->toPlainText(), ui->txe_setTitle->toPlainText(), ui->cbb_difficulty->currentIndex(), ui->txe_discursiveAnswer->toPlainText());
         ui->txe_discursiveAnswer->clear();
     }
-    ui->txe_setQuestionDescription->clear();
-    ui->txe_setTitle->clear();
 }
 
 void MainWindow::on_ltw_setExamQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)//Alternar entre questões da prova e guardar suas propriedades
@@ -149,7 +143,8 @@ void MainWindow::on_btn_removeQuestion_clicked()//Remover uma questão da prova
             ui->txe_discursiveAnswer->setReadOnly(true);
             ui->txe_setTitle->setReadOnly(true);
             ui->gbx_answer->setEnabled(false);
-            //ui->t_resposta_prog->setEnabled(false);
+            ui->btn_addToDb->setEnabled(false);
+            ui->btn_searchOnDb->setEnabled(false);
             ui->cbb_type->setEnabled(false);
             ui->cbb_difficulty->setEnabled(false);
         }
@@ -165,6 +160,7 @@ void MainWindow::on_btn_removeQuestion_clicked()//Remover uma questão da prova
 
 void MainWindow::on_btn_professorLogout_clicked()//Logout professor
 {
+    ui->ltw_setExamQuestionsList->clear();
     ui->stw_mainInterface->setCurrentIndex(0);
 }
 
@@ -179,6 +175,8 @@ void MainWindow::on_btn_addQuestion_clicked()//Criando uma questão para a prova
         ui->stw_answers->setEnabled(true);
         ui->cbb_type->setEnabled(true);
         ui->cbb_difficulty->setEnabled(true);
+        ui->btn_addToDb->setEnabled(true);
+        ui->btn_searchOnDb->setEnabled(true);
         ui->ltw_setExamQuestionsList->setCurrentRow(0);
     }
 }
@@ -253,36 +251,28 @@ void MainWindow::on_btn_searchOnDb_clicked()//Entrada na janela de busca do banc
 
 void MainWindow::on_btn_addToDb_clicked()//Inserir questão no banco de dados
 {
+    doSaveQuestionInProfessorList(ui->ltw_setExamQuestionsList->currentRow());
     if(ui->txe_setTitle->toPlainText() == ""){
-        QMessageBox::information(this, "Alerta", "A questão precisa de um título.");
+        QMessageBox::warning(this, "Alerta", "A questão precisa de um título.");
     }
     else{
         if(ui->txe_setQuestionDescription->toPlainText() == ""){
-            QMessageBox::information(this, "Alerta", "A questão precisa de um enunciado.");
+            QMessageBox::warning(this, "Alerta", "A questão precisa de um enunciado.");
         }
         else{
-            if(ui->cbb_type->currentIndex() == 0){
-                if(ui->ltw_compilationInput->count() == 0){
-                    QMessageBox::information(this, "Alerta", "A questão precisa de inputs e outputs para realizar os testes.");
+            QString command = "SELECT titulo,enunciado FROM questions WHERE titulo = '" + ui->txe_setTitle->toPlainText() + "' OR enunciado = '" + ui->txe_setQuestionDescription->toPlainText() + "'";
+            QSqlQuery query(db);
+            if(query.exec(command)){
+                if(query.size() > 0){
+                    QMessageBox::warning(this, "Alerta", "Essa questão já existe no banco de dados!");
                 }
                 else{
-                    //inserção no bd
-                }
-            }
-            else if(ui->cbb_type->currentIndex() == 1){
-                if(ui->ltw_multipleChoiceAlternatives->count() == 0){
-                    QMessageBox::information(this, "Alerta", "A questão precisa de alternativas.");
-                }
-                else{
-                    //inserção no bd
-                }
-            }
-            else if(ui->cbb_type->currentIndex() == 2){
-                if(ui->txe_discursiveAnswer->toPlainText() == ""){
-                    QMessageBox::information(this, "Alerta", "A questão precisa de um gabarito.");
-                }
-                else{
-                    //inserção no bd
+                    if(myProfessor->professorQuestionsList[ui->ltw_setExamQuestionsList->currentRow()]->doSaveInDb(&db)){
+                        QMessageBox::warning(this, "Alerta", "Questão adicionada com sucesso.");
+                    }
+                    else{
+                        QMessageBox::information(this, "Alerta", "A questão precisa estar completa para ser adicionada no banco.");
+                    }
                 }
             }
         }

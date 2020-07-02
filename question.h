@@ -3,7 +3,11 @@
 #include <QString>
 #include <QList>
 #include <QtXml>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
 #include "ui_mainwindow.h"
+//#include "mainwindow.h"
 
 class question{
 public:
@@ -24,6 +28,7 @@ public:
     virtual QDomElement toXml() = 0;
     virtual void setAnswer(Ui::MainWindow *ui) = 0;
     virtual void setDatabase(Ui::MainWindow *ui) = 0;
+    virtual bool doSaveInDb(QSqlDatabase* db) = 0;
     void setTitle(QString _title);
     QString getTitle();
     void setDifficulty(int _difficulty);
@@ -39,6 +44,7 @@ public:
     QDomElement toXml();
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
+    bool doSaveInDb(QSqlDatabase* db);
     void setInput(QList<QString> _input);
     QList<QString> getInput();
     void setOutput(QList<QString> _output);
@@ -57,6 +63,7 @@ public:
     QDomElement toXml();
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
+    bool doSaveInDb(QSqlDatabase* db);
     void setAlternatives(QList<QString> _alternatives);
     QList<QString> getAlternatives();
     void setCorrectChoice(int _correctChoice);
@@ -72,6 +79,7 @@ public:
     QDomElement toXml();
     void setAnswer(Ui::MainWindow *ui);
     void setDatabase(Ui::MainWindow *ui);
+    bool doSaveInDb(QSqlDatabase* db);
     void setCorrectAnswer(QString _correctAnswer);
     QString getCorrectAnswer();
 private:
@@ -90,7 +98,7 @@ public:
 class studentDiscursiveQuestion: public studentQuestion
 {
 public:
-    studentDiscursiveQuestion(int type, QString questionDescription);
+    studentDiscursiveQuestion(int _type, QString _questionDescription);
     void setStudentAnswer(QString _studentAnswer);
     QString getStudentAnswer();
 private:

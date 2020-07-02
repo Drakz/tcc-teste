@@ -78,8 +78,8 @@ QDomElement professorProgrammingQuestion::toXml(){
     QString input = "";
     QString output = "";
     for(int i = 0; i < this->input.size(); i++){
-        input =  "¬||¬" + this->input[i] + input ;
-        output =  "¬||¬" + this->output[i] + output ;
+        input.append(this->input[i] + "¬||¬");
+        output.append(this->output[i] + "¬||¬");
     }
     question.setAttribute("Inputs", input);
     question.setAttribute("Outputs", output);
@@ -89,18 +89,17 @@ QDomElement professorProgrammingQuestion::toXml(){
 
 void professorProgrammingQuestion::setAnswer(Ui::MainWindow *ui){
     ui->cbb_type->setCurrentIndex(0);
+    ui->ltw_compilationInput->clear();
     ui->spb_compilationAmount->setValue(this->getCompilationAmount());
     QString in;
     QString out;
     foreach(in,this->input){
-        QListWidgetItem* item = new QListWidgetItem(in);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
-        ui->ltw_compilationInput->addItem(item);
-    }
-    foreach(out,this->output){
-        QListWidgetItem* item = new QListWidgetItem(out);
-        item->setFlags(item->flags() | Qt::ItemIsEditable);
-        ui->ltw_compilationOutput->addItem(item);
+        QListWidgetItem* itemInput = new QListWidgetItem(in);
+        itemInput->setFlags(itemInput->flags() | Qt::ItemIsEditable);
+        ui->ltw_compilationInput->addItem(itemInput);
+        QListWidgetItem* itemOutput = new QListWidgetItem(out);
+        itemOutput->setFlags(itemOutput->flags() | Qt::ItemIsEditable);
+        ui->ltw_compilationOutput->addItem(itemOutput);
     }
 }
 
@@ -119,6 +118,28 @@ void professorProgrammingQuestion::setDatabase(Ui::MainWindow *ui){
     foreach(out,this->output){
         QListWidgetItem* item = new QListWidgetItem(out);
         ui->ltw_dbCompilationOutput->addItem(item);
+    }
+}
+
+bool professorProgrammingQuestion::doSaveInDb(QSqlDatabase* db){
+    if(this->input.size() == 0){
+        return false;
+    }
+    else{
+        QString answer = "";
+        for (int j = 0; j < this->input.size(); j++){
+            answer.append(this->input[j] + "¬:¬" + this->output[j] + "¬:¬");
+        }
+        answer.append("¬:¬" + QString::number(this->compilationAmount));
+        QString command;
+        QSqlQuery query(*db);
+        command = "INSERT INTO questions (enunciado, tipo, resposta, flag_assunto, titulo, dificuldade) VALUES ('"+this->questionDescription+"', '"+ QString::number(this->type) +"', '"+answer+"', '"+QString::number(1)+"', '"+this->title+"', '"+QString::number(this->difficulty)+"')";
+        if(query.exec(command)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 
@@ -150,7 +171,7 @@ QDomElement professorMultipleChoiceQuestion::toXml(){
     question.setAttribute("Type", this->type);
     QString alternatives = "";
     for(int i = 0; i < this->alternatives.size(); i++){
-        alternatives =  "¬||¬" + this->alternatives[i] + alternatives;
+        alternatives.append(this->alternatives[i] + "¬||¬");
     }
     question.setAttribute("Alternatives", alternatives);
     question.setAttribute("CorrectChoice", this->correctChoice);
@@ -159,6 +180,7 @@ QDomElement professorMultipleChoiceQuestion::toXml(){
 
 void professorMultipleChoiceQuestion::setAnswer(Ui::MainWindow *ui){
     ui->cbb_type->setCurrentIndex(1);
+    ui->ltw_multipleChoiceAlternatives->clear();
     QString alt;
     foreach(alt,this->alternatives){
         QListWidgetItem* item = new QListWidgetItem(alt);
@@ -183,6 +205,28 @@ void professorMultipleChoiceQuestion::setDatabase(Ui::MainWindow *ui){
     }
     if(this->correctChoice != -1){
         ui->ltw_dbMultipleChoiceAlternatives->item(this->correctChoice)->setCheckState(Qt::Unchecked);
+    }
+}
+
+bool professorMultipleChoiceQuestion::doSaveInDb(QSqlDatabase* db){
+    if(this->alternatives.size() == 0){
+        return false;
+    }
+    else{
+        QString answer = "";
+        for (int j = 0; j < this->alternatives.size(); j++){
+            answer.append(this->alternatives[j] + "¬:¬");
+        }
+        answer.append(QString::number(this->correctChoice));
+        QString command;
+        QSqlQuery query(*db);
+        command = "INSERT INTO questions (enunciado, tipo, resposta, flag_assunto, titulo, dificuldade) VALUES ('"+this->questionDescription+"', '"+ QString::number(this->type) +"', '"+answer+"', '"+QString::number(1)+"', '"+this->title+"', '"+QString::number(this->difficulty)+"')";
+        if(query.exec(command)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }
 
@@ -225,6 +269,23 @@ void professorDiscursiveQuestion::setCorrectAnswer(QString _correctAnswer){
 }
 QString professorDiscursiveQuestion::getCorrectAnswer(){
     return this->correctAnswer;
+}
+
+bool professorDiscursiveQuestion::doSaveInDb(QSqlDatabase *db){
+    if(this->correctAnswer == ""){
+        return false;
+    }
+    else{
+        QString command;
+        QSqlQuery query(*db);
+        command = "INSERT INTO questions (enunciado, tipo, resposta, flag_assunto, titulo, dificuldade) VALUES ('"+this->questionDescription+"', '"+ QString::number(this->type) +"', '"+this->correctAnswer+"', '"+QString::number(1)+"', '"+this->title+"', '"+QString::number(this->difficulty)+"')";
+        if(query.exec(command)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
 
 //studentDiscursiveQuestion functions

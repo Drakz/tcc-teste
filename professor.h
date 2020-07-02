@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include "myserver.h"
 #include "question.h"
+//#include "mainwindow.h"
 
 class professor : QObject{
 public:

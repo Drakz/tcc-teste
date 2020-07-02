@@ -65,8 +65,10 @@ void MainWindow::keyPressEvent(QKeyEvent *key){
 
 void MainWindow::on_btn_compile_clicked()//Compilar código para o student
 {
+    static_cast<studentProgrammingQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->currentRow()])->setCompilationAmount(static_cast<studentProgrammingQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->currentRow()])->getCompilationAmount()-1);
     QString studentCode = ui->txe_studentProgrammingAnswer->toPlainText();
-    QString path = "C://code.c";
+    QString questionNumber = QString::number(ui->ltw_examQuestionsList->currentRow());
+    QString path = "C://code" + questionNumber + ".c";
     QFile file(path);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
         qDebug() << "File open failed";
@@ -75,8 +77,10 @@ void MainWindow::on_btn_compile_clicked()//Compilar código para o student
     QTextStream out(&file);
     out << studentCode << endl;
     QProcess studentProgram;
+    QString studentProcess = "gcc";
+    QStringList studentProcessArguments = {"-g", "code"+questionNumber+".c", "-o", "code"+questionNumber};
     studentProgram.setProcessChannelMode(QProcess::MergedChannels);
-    studentProgram.start("gcc -g code.c -o code");
+    studentProgram.start(studentProcess, studentProcessArguments);
     studentProgram.waitForFinished();
     QString compilerOutput = studentProgram.readAll();
     if(compilerOutput != "")
@@ -88,7 +92,9 @@ void MainWindow::on_btn_compile_clicked()//Compilar código para o student
 
 void MainWindow::on_btn_run_clicked()//Executar código para o student
 {
-    system("code");
+    QString questionNumber = QString::number(ui->ltw_examQuestionsList->currentRow());
+    QString systemCall = "code" + questionNumber;
+    system(systemCall.toUtf8());
 }
 
 void MainWindow::on_btn_studentLogout_clicked()//Logout student
@@ -121,44 +127,58 @@ void MainWindow::on_btn_finishExam_clicked()//teste
 
 void MainWindow::on_ltw_examQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous){//Mudança e armazenamento das questões da prova pelo student
     if(previous){//Salvo a resposta da questão anterior
-        if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == PROGRAMMING){//Programação
-            myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->setStudentAnswer(ui->txe_studentProgrammingAnswer->toPlainText());
-            ui->txe_studentProgrammingAnswer->clear();
-            ui->txe_compilerOutput->clear();
-        }
-        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == MULTIPLECHOICE){//Múltipla escolha
-        }
-        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == DISCURSIVE){//Discursiva
-            myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->setStudentAnswer(ui->txe_studentProgrammingAnswer->toPlainText());
-            ui->ptx_studentDiscursiveAnswer->clear();
-        }
-        ui->txe_questionDescription->clear();
+        doSaveQuestionInStudentList(ui->ltw_examQuestionsList->row(previous));
     }
     if(current && previous){//Carrego as informações da questão atual
-        if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == PROGRAMMING){//Programação
-            ui->stw_studentAnswers->setCurrentIndex(0);
-            ui->txe_studentProgrammingAnswer->setText(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getStudentAnswer());
+        doUpdateStudentQuestion(ui->ltw_examQuestionsList->row(current));
+    }
+}
+
+void MainWindow::doUpdateStudentQuestion(int index){
+    if(myStudent->studentQuestionsList[index]->getQuestionType() == PROGRAMMING){//Programação
+        ui->stw_studentAnswers->setCurrentIndex(0);
+        ui->txe_studentProgrammingAnswer->setText(myStudent->studentQuestionsList[index]->getStudentAnswer());
+    }
+    else if(myStudent->studentQuestionsList[index]->getQuestionType() == MULTIPLECHOICE){//Múltipla escolha
+        ui->stw_studentAnswers->setCurrentIndex(1);
+        QLayout *layout = ui->gbx_alternatives->layout();
+        QLayoutItem *child;
+        if(ui->gbx_alternatives->layout()->itemAt(0) != 0){
+            while ((child = layout->takeAt(0)) != 0) {
+                delete child->widget();
+                delete child;
+            }
         }
-        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == MULTIPLECHOICE){//Múltipla escolha
-            ui->stw_studentAnswers->setCurrentIndex(1);
-            QLayout *layout = ui->gbx_alternatives->layout();
-            QLayoutItem *child;
-            if(ui->gbx_alternatives->layout()->itemAt(0) != 0){
-                while ((child = layout->takeAt(0)) != 0) {
-                    delete child->widget();
-                    delete child;
+        for (int i = 0; i < static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[index])->getAlternatives().size(); i++) {
+            QCheckBox *checkBox = new QCheckBox(static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[index])->getAlternatives()[i]);
+            ui->gbx_alternatives->layout()->addWidget(checkBox);
+        }
+    }
+    else if(myStudent->studentQuestionsList[index]->getQuestionType() == DISCURSIVE){//Discursiva
+        ui->stw_studentAnswers->setCurrentIndex(2);
+        ui->ptx_studentDiscursiveAnswer->setPlainText(myStudent->studentQuestionsList[index]->getStudentAnswer());
+    }
+    ui->txe_questionDescription->setText(myStudent->studentQuestionsList[index]->getQuestionDescription());
+}
+
+void MainWindow::doSaveQuestionInStudentList(int index){
+    if(myStudent->studentQuestionsList[index]->getQuestionType() == PROGRAMMING){//Programação
+        myStudent->studentQuestionsList[index]->setStudentAnswer(ui->txe_studentProgrammingAnswer->toPlainText());
+        static_cast<studentProgrammingQuestion*>(myStudent->studentQuestionsList[index])->setCompilerOutput(ui->txe_compilerOutput->toPlainText());
+    }
+    else if(myStudent->studentQuestionsList[index]->getQuestionType() == MULTIPLECHOICE){//Múltipla escolha
+        QLayout *layout = ui->gbx_alternatives->layout();
+        QLayoutItem *child;
+        if(ui->gbx_alternatives->layout()->itemAt(0) != 0){
+            while ((child = layout->takeAt(0)) != 0) {
+                if(static_cast<QCheckBox*>(child->widget())->checkState() == Qt::Checked){
+                    static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[index])->setStudentAnswer("3");//checar qual a certa
                 }
             }
-            for (int i = 0; i < static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives().size(); i++) {
-                QCheckBox *checkBox = new QCheckBox(static_cast<studentMultipleChoiceQuestion*>(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)])->getAlternatives()[i]);
-                ui->gbx_alternatives->layout()->addWidget(checkBox);
-            }
         }
-        else if(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getQuestionType() == DISCURSIVE){//Discursiva
-            ui->stw_studentAnswers->setCurrentIndex(2);
-            ui->ptx_studentDiscursiveAnswer->setPlainText(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(previous)]->getStudentAnswer());
-        }
-        ui->txe_questionDescription->setText(myStudent->studentQuestionsList[ui->ltw_examQuestionsList->row(current)]->getQuestionDescription());
+    }
+    else if(myStudent->studentQuestionsList[index]->getQuestionType() == DISCURSIVE){//Discursiva
+        myStudent->studentQuestionsList[index]->setStudentAnswer(ui->txe_studentProgrammingAnswer->toPlainText());
     }
 }
 

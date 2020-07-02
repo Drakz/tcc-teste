@@ -71,6 +71,8 @@ private slots:
     void on_btn_finishExam_clicked();
     void on_ltw_examQuestionsList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
     void on_ltw_examQuestionsList_currentRowChanged(int currentRow);
+    void doUpdateStudentQuestion(int index);
+    void doSaveQuestionInStudentList(int index);
 
     //BD
     void on_btn_closeDbWindow_clicked();
